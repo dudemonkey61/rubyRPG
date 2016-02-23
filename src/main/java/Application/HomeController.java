@@ -10,4 +10,9 @@ public class HomeController {
 	public String home() {
 		return "index";
 	}
+	
+	@RequestMapping("/world")
+	public String worldMap() {
+		return "worldMap";
+	}
 }
