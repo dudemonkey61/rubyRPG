@@ -1,12 +1,20 @@
-var dummyModule = angular.module('rubyRPG', ['ngRoute', 'worldPage'])
+var dummyModule = angular.module('rubyRPG', ['ngRoute', 'worldPage', 'login', 'register'])
 
 .config(['$routeProvider', function($routeProvider) {
-	$routeProvider.
-	when('/', {
+	$routeProvider
+	.when('/world', {
 		templateUrl: 'worldPage',
 		controller: 'worldController'
-	}).
-	otherwise({
+	})
+	.when('/', {
+		templateUrl: 'loginPage',
+		controller: 'loginController'
+	})
+	.when('/register', {
+		templateUrl: 'registerPage',
+		controller: 'registerController'
+	})
+	.otherwise({
 		redirectTo: '/'
 	})
 }])
