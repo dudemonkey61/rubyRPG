@@ -11,8 +11,8 @@ public class HomeController {
 		return "index";
 	}
 	
-	@RequestMapping("/world")
-	public String worldMap() {
-		return "worldMap";
+	@RequestMapping("/worldPage")
+	public String worldPage() {
+		return "worldPage";
 	}
 }
