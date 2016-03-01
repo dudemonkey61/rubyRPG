@@ -6,7 +6,7 @@ var dummyModule = angular.module('rubyRPG', ['ngRoute', 'worldPage', 'login', 'r
 		templateUrl: 'worldPage',
 		controller: 'worldController'
 	})
-	.when('/', {
+	.when('/login', {
 		templateUrl: 'loginPage',
 		controller: 'loginController'
 	})
@@ -15,6 +15,6 @@ var dummyModule = angular.module('rubyRPG', ['ngRoute', 'worldPage', 'login', 'r
 		controller: 'registerController'
 	})
 	.otherwise({
-		redirectTo: '/'
+		redirectTo: '/login'
 	})
 }])

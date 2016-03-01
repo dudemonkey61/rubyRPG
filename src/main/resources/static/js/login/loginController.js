@@ -7,7 +7,7 @@ var loginController = function($scope, $http, $location) {
 		var config = {}
 		$http.post('/login', data, config)
 		.success(function (data, status, headers, config) {
-			$location.path('/worldPage');
+			$location.path('/world');
 		})
 		.error(function (data, status, header, config) {
 			console.error(data);

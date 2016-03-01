@@ -1,4 +1,5 @@
 var registerController = function($scope, $http, $location) {
+	console.log("In register controller");
 	$scope.sendRegister = function() {
 		console.log("Sending register");
 		var data = {
@@ -9,7 +10,7 @@ var registerController = function($scope, $http, $location) {
 		var config = {}
 		$http.post('/register', data, config)
 		.success(function (data, status, headers, config) {
-			$location.path('/');
+			$location.path('/login');
 		})
 		.error(function (data, status, header, config) {
 			console.error(data);
@@ -19,6 +20,7 @@ var registerController = function($scope, $http, $location) {
 	}
 	
 	$scope.toLogin = function() {
-		$location.path('/');
+		console.log("To login screen");
+		$location.path('/login');
 	}
 }
