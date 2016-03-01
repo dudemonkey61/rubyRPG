@@ -24,6 +24,11 @@ public class HomeController {
 		return "users/login";
 	}
 	
+	@RequestMapping("/town")
+	public String town() {
+		return "townPage";
+	}
+	
 	@RequestMapping("/registerPage")
 	public String registerPage() {
 		return "users/register";
