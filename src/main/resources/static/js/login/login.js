@@ -1,2 +1,2 @@
-angular.module('login', [])
-	.controller('loginController', ['$scope', '$http', '$location', loginController])
+angular.module('login', ['userInfo'])
+	.controller('loginController', ['$scope', '$http', '$location', 'userData', loginController])

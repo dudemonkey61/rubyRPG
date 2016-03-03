@@ -1,15 +1,9 @@
 package Application;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 //import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.heroku.sdk.jdbc.DatabaseUrl;
 
 import dataTransfer.LoginData;
+import dataTransfer.LoginValidation;
 import dataTransfer.RegisterData;
 //import Models.RegisterUserCredentials;
+import dataTransfer.ValidationCodes;
 
 @Controller
 public class HomeController {
@@ -46,40 +42,72 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<String> loginGet(@RequestBody LoginData data) {
-		System.out.println(data.userName);
-		System.out.println(data.password);
-		return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+	public LoginValidation loginGet(@RequestBody LoginData data) {
+		LoginValidation code = new LoginValidation();
+		try {
+			Connection connection = DatabaseUrl.extract().getConnection();
+	        Statement stmt = connection.createStatement();
+	        ResultSet user = stmt.executeQuery("SELECT count(*) FROM Users WHERE username = '" + data.userName + "' AND password = '" + data.password + "'");
+	        while (user.next()) {
+	        	if(user.getInt(0) == 0) {
+	        		code.IncorrectUsernameOrPassword = true;
+	        	}
+	        }
+	        if(!code.IncorrectUsernameOrPassword) {
+		        ResultSet userInfo = stmt.executeQuery("SELECT * FROM Users WHERE username = '" + data.userName + "' AND password = '" + data.password + "'");
+		        while (userInfo.next()) {
+		        	if(userInfo.getInt(0) == 0) {
+		        		code.userId = userInfo.getInt(0);
+		        		code.userName = userInfo.getString(1);
+		        	}
+		        }
+	        }
+		} catch (Exception e) {
+			code.databaseError = true;
+		}
+        return code;
+//		return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<String> registerTransfer(@RequestBody RegisterData data) {
+	public ValidationCodes registerTransfer(@RequestBody RegisterData data) {
+		ValidationCodes code = new ValidationCodes();
 		try {
 //	        URI dbUri = new URI("postgres://fghhopulwiaynq:OfvO_N_KLpwGqwbOZY7wEwKfL_@ec2-54-221-201-165.compute-1.amazonaws.com:5432/df02650vnkne80");
 //			String dbusername = dbUri.getUserInfo().split(":")[0];
 //			String dbpassword = dbUri.getUserInfo().split(":")[1];
 //	        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-	        try {
-		        Connection connection = DatabaseUrl.extract().getConnection();
-		        Statement stmt = connection.createStatement();
-		        ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM Users");
-		        while (rs.next()) {
-		            System.out.println("Number of Users: " + rs.getString(0));
-		        }
-			} catch (SQLException e) {
-				System.out.println("Finding Out What Broke");
-			}
-
-			System.out.println(data.userName);
-			System.out.println(data.password);
-			System.out.println(data.confirmPassword);
-			System.out.println(data.email);
-			
-			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-			return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+	        Connection connection = DatabaseUrl.extract().getConnection();
+	        Statement stmt = connection.createStatement();
+	        ResultSet userName = stmt.executeQuery("SELECT COUNT(*) FROM Users where username = '" + data.userName + "'");
+	        ResultSet email = stmt.executeQuery("SELECT count(*) FROM Users where email = '" + data.email + "'");
+//	        while (userNames.next()) {
+//	            System.out.println("Number of Users: " + userNames.getString(0));
+//	        }
+	        while (userName.next()) {
+	        	if(userName.getInt(0) != 0) {
+	        		code.UsernameTaken = true;
+	        	}
+	        }
+	        while (email.next()) {
+	        	if(email.getInt(0) != 0) {
+	        		code.EmailTaken = true;
+	        	}
+	        }
+	        String newPassword = data.password;
+	        String newConfirmPassword = data.confirmPassword;
+	        if(!newPassword.equals(newConfirmPassword)) {
+	        	code.PasswordMismatch = true;
+	        }
+	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
+	        	stmt.execute("Insert into Users (username, email, password) values (" + data.userName + "," + data.email + "," + data.password + ")");
+	        }
+			//return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			//return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+			code.databaseError = true;
 		}
+		return code;
 	}
 	
 //	@RequestMapping(value = "/validate", method = RequestMethod.POST)

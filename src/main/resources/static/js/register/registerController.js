@@ -1,4 +1,7 @@
 var registerController = function($scope, $http, $location) {
+	$scope.userNameError = false;
+	$scope.emailError = false;
+	$scope.passwordError = false;
 	$scope.sendRegister = function() {
 		var data = {
 			userName: $scope.userName,
@@ -9,7 +12,12 @@ var registerController = function($scope, $http, $location) {
 		var config = {}
 		$http.post('/register', data, config)
 		.success(function (data, status, headers, config) {
-			$location.path('/login');
+			$scope.userNameError = data.UserNameTaken;
+			$scope.emailError = data.EmailTaken;
+			$scope.passwordError = data.PasswordMismatch;
+	        if(!$scope.userNameError && !$scope.emailError && !$scope.passwordError) {
+	        	$location.path('/login');
+	        }
 		})
 		.error(function (data, status, header, config) {
 			console.error(data);

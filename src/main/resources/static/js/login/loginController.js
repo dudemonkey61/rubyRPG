@@ -1,4 +1,5 @@
-var loginController = function($scope, $http, $location) {
+var loginController = function($scope, $http, $location, userData) {
+	$scope.UsernamePasswordError = false;
 	$scope.sendLogin = function() {
 		var data = {
 			userName: $scope.userName,
@@ -7,12 +8,18 @@ var loginController = function($scope, $http, $location) {
 		var config = {}
 		$http.post('/login', data, config)
 		.success(function (data, status, headers, config) {
-			$location.path('/world');
+			$scope.IncorrectUsernameOrPassword = data.IncorrectUsernameOrPassword;
+			if(!$scope.UsernamePasswordError) {
+				userData.userId = data.userId;
+				userData.userName = data.userName;
+				$location.path('/world');
+			}
 		})
 		.error(function (data, status, header, config) {
 			console.error(data);
 			console.error(status);
 			console.error(headers);
+			
 		})
 	}
 	
