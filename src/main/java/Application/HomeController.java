@@ -46,8 +46,9 @@ public class HomeController {
 		LoginValidation code = new LoginValidation();
 		try {
 			Connection connection = DatabaseUrl.extract().getConnection();
+	        Statement stmtCount = connection.createStatement();
 	        Statement stmt = connection.createStatement();
-	        ResultSet user = stmt.executeQuery("SELECT count(*) FROM Users WHERE username = '" + data.userName + "' AND password = '" + data.password + "'");
+	        ResultSet user = stmtCount.executeQuery("SELECT count(*) FROM Users WHERE username = '" + data.userName + "' AND password = '" + data.password + "'");
 	        while (user.next()) {
 	        	if(user.getInt(0) == 0) {
 	        		code.IncorrectUsernameOrPassword = true;
@@ -78,9 +79,11 @@ public class HomeController {
 //			String dbpassword = dbUri.getUserInfo().split(":")[1];
 //	        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
 	        Connection connection = DatabaseUrl.extract().getConnection();
-	        Statement stmt = connection.createStatement();
-	        ResultSet userName = stmt.executeQuery("SELECT COUNT(*) FROM Users where username = '" + data.userName + "'");
-	        ResultSet email = stmt.executeQuery("SELECT count(*) FROM Users where email = '" + data.email + "'");
+	        Statement stmtUser = connection.createStatement();
+	        Statement stmtEmail = connection.createStatement();
+	        Statement stmtInsert = connection.createStatement();
+	        ResultSet userName = stmtUser.executeQuery("SELECT COUNT(*) FROM Users where username = '" + data.userName + "'");
+	        ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users where email = '" + data.email + "'");
 //	        while (userNames.next()) {
 //	            System.out.println("Number of Users: " + userNames.getString(0));
 //	        }
@@ -100,7 +103,7 @@ public class HomeController {
 	        	code.PasswordMismatch = true;
 	        }
 	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
-	        	stmt.execute("Insert into Users (username, email, password) values (" + data.userName + "," + data.email + "," + data.password + ")");
+	        	stmtInsert.execute("Insert into Users (username, email, password) values (" + data.userName + "," + data.email + "," + data.password + ")");
 	        }
 			//return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 		} catch (Exception e) {
