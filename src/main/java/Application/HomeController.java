@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.heroku.sdk.jdbc.DatabaseUrl;
 
@@ -42,7 +43,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public LoginValidation loginGet(@RequestBody LoginData data) {
+	public @ResponseBody LoginValidation loginGet(@RequestBody LoginData data) {
 		LoginValidation code = new LoginValidation();
 		try {
 			Connection connection = DatabaseUrl.extract().getConnection();
@@ -71,7 +72,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ValidationCodes registerTransfer(@RequestBody RegisterData data) {
+	public @ResponseBody ValidationCodes registerTransfer(@RequestBody RegisterData data) {
 		ValidationCodes code = new ValidationCodes();
 		try {
 //	        URI dbUri = new URI("postgres://fghhopulwiaynq:OfvO_N_KLpwGqwbOZY7wEwKfL_@ec2-54-221-201-165.compute-1.amazonaws.com:5432/df02650vnkne80");
