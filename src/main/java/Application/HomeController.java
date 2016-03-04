@@ -91,10 +91,8 @@ public class HomeController {
 			code.counter = 20;
 	        while (userName.next()) {
 				++code.counter;
-				code.counter = userName.getRow();
-				code.row = userName.getString(0);
-				code.counter = userName.getInt(0);
-	        	if(userName.getInt(0) != 0) {
+				code.counter = userName.getInt(1);
+	        	if(userName.getInt(1) != 0) {
 	    			code.counter = 100;
 	        		code.UsernameTaken = true;
 	        	}
@@ -102,7 +100,7 @@ public class HomeController {
 			code.counter = 200;
 	        while (email.next()) {
 				++code.counter;
-	        	if(email.getInt(0) != 0) {
+	        	if(email.getInt(1) != 0) {
 	    			code.counter = 500;
 	        		code.EmailTaken = true;
 	        	}
