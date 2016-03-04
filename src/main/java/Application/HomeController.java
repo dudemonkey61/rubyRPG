@@ -88,36 +88,25 @@ public class HomeController {
 //	        while (userNames.next()) {
 //	            System.out.println("Number of Users: " + userNames.getString(0));
 //	        }
-			code.counter = 20;
 	        while (userName.next()) {
-				++code.counter;
-				code.counter = userName.getInt(1);
+	        	code.counter = userName.getInt(1);
 	        	if(userName.getInt(1) != 0) {
-	    			code.counter = 100;
 	        		code.UsernameTaken = true;
 	        	}
 	        }
-			code.counter = 200;
 	        while (email.next()) {
-				++code.counter;
 	        	if(email.getInt(1) != 0) {
-	    			code.counter = 500;
 	        		code.EmailTaken = true;
 	        	}
 	        }
-			++code.counter;
 	        String newPassword = data.password;
-			++code.counter;
 	        String newConfirmPassword = data.confirmPassword;
-			++code.counter;
 	        if(!newPassword.equals(newConfirmPassword)) {
 	        	code.PasswordMismatch = true;
 	        }
-			++code.counter;
 	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
 	        	stmtInsert.execute("Insert into Users (username, email, password) values ('" + data.userName + "','" + data.email + "','" + data.password + "')");
 	        }
-	        code.counter = -1;
 			//return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			//return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
