@@ -83,8 +83,8 @@ public class HomeController {
 	        Statement stmtUser = connection.createStatement();
 	        Statement stmtEmail = connection.createStatement();
 	        Statement stmtInsert = connection.createStatement();
-	        ResultSet userName = stmtUser.executeQuery("SELECT COUNT(*) FROM Users where username = '" + data.userName + "'");
-	        ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users where email = '" + data.email + "'");
+	        ResultSet userName = stmtUser.executeQuery("SELECT count(*) FROM Users WHERE username = '" + data.userName + "'");
+	        ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users WHERE email = '" + data.email + "'");
 //	        while (userNames.next()) {
 //	            System.out.println("Number of Users: " + userNames.getString(0));
 //	        }
