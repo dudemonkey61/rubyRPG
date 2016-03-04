@@ -95,8 +95,11 @@ public class HomeController {
 //	        while (userNames.next()) {
 //	            System.out.println("Number of Users: " + userNames.getString(0));
 //	        }
+			code.counter = 20;
 	        while (userName.next()) {
+				code.counter = 50;
 	        	if(userName.getInt(0) != 0) {
+	    			code.counter = 100;
 	        		code.UsernameTaken = true;
 	        	}
 	        }
