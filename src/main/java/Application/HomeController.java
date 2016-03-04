@@ -51,16 +51,16 @@ public class HomeController {
 	        Statement stmt = connection.createStatement();
 	        ResultSet user = stmtCount.executeQuery("SELECT count(*) FROM Users WHERE username = '" + data.userName + "' AND password = '" + data.password + "'");
 	        while (user.next()) {
-	        	if(user.getInt(0) == 0) {
+	        	if(user.getInt(1) == 0) {
 	        		code.IncorrectUsernameOrPassword = true;
 	        	}
 	        }
 	        if(!code.IncorrectUsernameOrPassword) {
 		        ResultSet userInfo = stmt.executeQuery("SELECT * FROM Users WHERE username = '" + data.userName + "' AND password = '" + data.password + "'");
 		        while (userInfo.next()) {
-		        	if(userInfo.getInt(0) == 0) {
-		        		code.userId = userInfo.getInt(0);
-		        		code.userName = userInfo.getString(1);
+		        	if(userInfo.getInt(1) != 0) {
+		        		code.userId = userInfo.getInt(1);
+		        		code.userName = userInfo.getString(2);
 		        	}
 		        }
 	        }
