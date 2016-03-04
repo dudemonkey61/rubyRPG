@@ -115,7 +115,7 @@ public class HomeController {
 	        }
 			++code.counter;
 	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
-	        	stmtInsert.execute("Insert into Users (username, email, password) values (" + data.userName + "," + data.email + "," + data.password + ")");
+	        	stmtInsert.execute("Insert into Users (username, email, password) values ('" + data.userName + "','" + data.email + "','" + data.password + "')");
 	        }
 	        code.counter = -1;
 			//return new ResponseEntity<String>(HttpStatus.ACCEPTED);
