@@ -79,12 +79,19 @@ public class HomeController {
 //			String dbusername = dbUri.getUserInfo().split(":")[0];
 //			String dbpassword = dbUri.getUserInfo().split(":")[1];
 //	        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+			++code.counter;
 	        Connection connection = DatabaseUrl.extract().getConnection();
+			++code.counter;
 	        Statement stmtUser = connection.createStatement();
+			++code.counter;
 	        Statement stmtEmail = connection.createStatement();
+			++code.counter;
 	        Statement stmtInsert = connection.createStatement();
+			++code.counter;
 	        ResultSet userName = stmtUser.executeQuery("SELECT COUNT(*) FROM Users where username = '" + data.userName + "'");
+			++code.counter;
 	        ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users where email = '" + data.email + "'");
+			++code.counter;
 //	        while (userNames.next()) {
 //	            System.out.println("Number of Users: " + userNames.getString(0));
 //	        }
@@ -93,19 +100,25 @@ public class HomeController {
 	        		code.UsernameTaken = true;
 	        	}
 	        }
+			++code.counter;
 	        while (email.next()) {
 	        	if(email.getInt(0) != 0) {
 	        		code.EmailTaken = true;
 	        	}
 	        }
+			++code.counter;
 	        String newPassword = data.password;
+			++code.counter;
 	        String newConfirmPassword = data.confirmPassword;
+			++code.counter;
 	        if(!newPassword.equals(newConfirmPassword)) {
 	        	code.PasswordMismatch = true;
 	        }
+			++code.counter;
 	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
 	        	stmtInsert.execute("Insert into Users (username, email, password) values (" + data.userName + "," + data.email + "," + data.password + ")");
 	        }
+	        code.counter = -1;
 			//return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			//return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
