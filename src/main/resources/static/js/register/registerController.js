@@ -12,7 +12,7 @@ var registerController = function($scope, $http, $location) {
 		var config = {}
 		$http.post('/register', data, config)
 		.success(function (data, status, headers, config) {
-			$scope.userNameError = data.UserNameTaken;
+			$scope.userNameError = data.UsernameTaken;
 			$scope.emailError = data.EmailTaken;
 			$scope.passwordError = data.PasswordMismatch;
 	        if(!$scope.userNameError && !$scope.emailError && !$scope.passwordError && !data.databaseError) {

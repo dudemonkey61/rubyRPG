@@ -1,6 +1,7 @@
 <hr></hr>
 <form>
-	<label ng-if="IncorrectUsernameOrPassword">UserName or Password is Incorrect</label>
+	<label ng-if="UsernamePasswordError">UserName or Password is Incorrect</label>
+	<br />
 	<label>UserName:</label>
 	<input type="text" ng-model="userName" placeholder="Enter your UserName"/>
 	<br />

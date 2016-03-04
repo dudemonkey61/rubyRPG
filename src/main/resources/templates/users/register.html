@@ -1,8 +1,11 @@
 <hr></hr>
 <form>
 	<label ng-if="userNameError" class="error">UserName Taken</label>
+	<br />
 	<label ng-if="emailError" class="error">Email Taken</label>
+	<br />
 	<label ng-if="passwordError" class="error">Passwords do not match</label>
+	<br />
 	<label>UserName:</label>
 	<input type="text" ng-model="userName" placeholder="Enter your UserName"/>
 	<br />
