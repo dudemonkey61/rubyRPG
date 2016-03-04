@@ -73,43 +73,43 @@ public class HomeController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ValidationCodes registerTransfer(@RequestBody RegisterData data) {
 		ValidationCodes code = new ValidationCodes();
-//		try {
-////	        URI dbUri = new URI("postgres://fghhopulwiaynq:OfvO_N_KLpwGqwbOZY7wEwKfL_@ec2-54-221-201-165.compute-1.amazonaws.com:5432/df02650vnkne80");
-////			String dbusername = dbUri.getUserInfo().split(":")[0];
-////			String dbpassword = dbUri.getUserInfo().split(":")[1];
-////	        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-//	        Connection connection = DatabaseUrl.extract().getConnection();
-//	        Statement stmtUser = connection.createStatement();
-//	        Statement stmtEmail = connection.createStatement();
-//	        Statement stmtInsert = connection.createStatement();
-//	        ResultSet userName = stmtUser.executeQuery("SELECT COUNT(*) FROM Users where username = '" + data.userName + "'");
-//	        ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users where email = '" + data.email + "'");
-////	        while (userNames.next()) {
-////	            System.out.println("Number of Users: " + userNames.getString(0));
-////	        }
-//	        while (userName.next()) {
-//	        	if(userName.getInt(0) != 0) {
-//	        		code.UsernameTaken = true;
-//	        	}
+		try {
+//	        URI dbUri = new URI("postgres://fghhopulwiaynq:OfvO_N_KLpwGqwbOZY7wEwKfL_@ec2-54-221-201-165.compute-1.amazonaws.com:5432/df02650vnkne80");
+//			String dbusername = dbUri.getUserInfo().split(":")[0];
+//			String dbpassword = dbUri.getUserInfo().split(":")[1];
+//	        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+	        Connection connection = DatabaseUrl.extract().getConnection();
+	        Statement stmtUser = connection.createStatement();
+	        Statement stmtEmail = connection.createStatement();
+	        Statement stmtInsert = connection.createStatement();
+	        ResultSet userName = stmtUser.executeQuery("SELECT COUNT(*) FROM Users where username = '" + data.userName + "'");
+	        ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users where email = '" + data.email + "'");
+//	        while (userNames.next()) {
+//	            System.out.println("Number of Users: " + userNames.getString(0));
 //	        }
-//	        while (email.next()) {
-//	        	if(email.getInt(0) != 0) {
-//	        		code.EmailTaken = true;
-//	        	}
-//	        }
-//	        String newPassword = data.password;
-//	        String newConfirmPassword = data.confirmPassword;
-//	        if(!newPassword.equals(newConfirmPassword)) {
-//	        	code.PasswordMismatch = true;
-//	        }
-//	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
-//	        	stmtInsert.execute("Insert into Users (username, email, password) values (" + data.userName + "," + data.email + "," + data.password + ")");
-//	        }
-//			//return new ResponseEntity<String>(HttpStatus.ACCEPTED);
-//		} catch (Exception e) {
-//			//return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+	        while (userName.next()) {
+	        	if(userName.getInt(0) != 0) {
+	        		code.UsernameTaken = true;
+	        	}
+	        }
+	        while (email.next()) {
+	        	if(email.getInt(0) != 0) {
+	        		code.EmailTaken = true;
+	        	}
+	        }
+	        String newPassword = data.password;
+	        String newConfirmPassword = data.confirmPassword;
+	        if(!newPassword.equals(newConfirmPassword)) {
+	        	code.PasswordMismatch = true;
+	        }
+	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
+	        	stmtInsert.execute("Insert into Users (username, email, password) values (" + data.userName + "," + data.email + "," + data.password + ")");
+	        }
+			//return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			//return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
 			code.databaseError = true;
-//		}
+		}
 		return code;
 	}
 	
