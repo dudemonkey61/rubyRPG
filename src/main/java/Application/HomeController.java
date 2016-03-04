@@ -79,33 +79,28 @@ public class HomeController {
 //			String dbusername = dbUri.getUserInfo().split(":")[0];
 //			String dbpassword = dbUri.getUserInfo().split(":")[1];
 //	        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-			++code.counter;
 	        Connection connection = DatabaseUrl.extract().getConnection();
-			++code.counter;
 	        Statement stmtUser = connection.createStatement();
-			++code.counter;
 	        Statement stmtEmail = connection.createStatement();
-			++code.counter;
 	        Statement stmtInsert = connection.createStatement();
-			++code.counter;
 	        ResultSet userName = stmtUser.executeQuery("SELECT COUNT(*) FROM Users where username = '" + data.userName + "'");
-			++code.counter;
 	        ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users where email = '" + data.email + "'");
-			++code.counter;
 //	        while (userNames.next()) {
 //	            System.out.println("Number of Users: " + userNames.getString(0));
 //	        }
 			code.counter = 20;
 	        while (userName.next()) {
-				code.counter = 50;
+				++code.counter;
 	        	if(userName.getInt(0) != 0) {
 	    			code.counter = 100;
 	        		code.UsernameTaken = true;
 	        	}
 	        }
-			++code.counter;
+			code.counter = 200;
 	        while (email.next()) {
+				++code.counter;
 	        	if(email.getInt(0) != 0) {
+	    			code.counter = 500;
 	        		code.EmailTaken = true;
 	        	}
 	        }
