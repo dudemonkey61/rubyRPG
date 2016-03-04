@@ -91,7 +91,8 @@ public class HomeController {
 			code.counter = 20;
 	        while (userName.next()) {
 				++code.counter;
-				code.row = userName.toString();
+				code.counter = userName.getRow();
+				code.row = userName.getString(0);
 				code.counter = userName.getInt(0);
 	        	if(userName.getInt(0) != 0) {
 	    			code.counter = 100;
