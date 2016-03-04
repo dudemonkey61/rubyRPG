@@ -21,6 +21,7 @@ var registerController = function($scope, $http, $location) {
 	        if(data.databaseError) {
 	        	console.log("REGISTER");
 	        	console.log(data.counter);
+	        	console.log(data.row);
 	        }
 		})
 		.error(function (data, status, header, config) {
