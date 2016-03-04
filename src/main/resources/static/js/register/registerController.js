@@ -12,11 +12,14 @@ var registerController = function($scope, $http, $location) {
 		var config = {}
 		$http.post('/register', data, config)
 		.success(function (data, status, headers, config) {
-//			$scope.userNameError = data.UserNameTaken;
-//			$scope.emailError = data.EmailTaken;
-//			$scope.passwordError = data.PasswordMismatch;
-	        if(!$scope.userNameError && !$scope.emailError && !$scope.passwordError) {
+			$scope.userNameError = data.UserNameTaken;
+			$scope.emailError = data.EmailTaken;
+			$scope.passwordError = data.PasswordMismatch;
+	        if(!$scope.userNameError && !$scope.emailError && !$scope.passwordError && !data.databaseError) {
 	        	$location.path('/login');
+	        }
+	        if(data.databaseError) {
+	        	console.log("REGISTER");
 	        }
 		})
 		.error(function (data, status, header, config) {
