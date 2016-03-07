@@ -1,7 +1,5 @@
 var registerController = function($scope, $http, $location) {
-	console.log("In register controller");
 	$scope.sendRegister = function() {
-		console.log("Sending register");
 		var data = {
 			userName: $scope.userName,
 			email: $scope.email,
@@ -20,7 +18,6 @@ var registerController = function($scope, $http, $location) {
 	}
 	
 	$scope.toLogin = function() {
-		console.log("To login screen");
 		$location.path('/login');
 	}
 }
