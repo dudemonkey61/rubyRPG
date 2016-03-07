@@ -4,7 +4,7 @@ import dto.MarketObject;
 
 public class MarketLogic 
 {
-	public MarketObject buyPotion(MarketObject market)
+	public static MarketObject buyPotion(MarketObject market)
 	{
 		market.getPlayer().setHealItems(market.getPlayer().getHealItems() + 1);
 		
@@ -13,7 +13,7 @@ public class MarketLogic
 		return market;
 	}
 	
-	public MarketObject buyAttack(MarketObject market)
+	public static MarketObject buyAttack(MarketObject market)
 	{
 		market.getPlayer().setHealth(market.getPlayer().getHealth() + 1);
 		
@@ -22,7 +22,7 @@ public class MarketLogic
 		return market;
 	}
 	
-	public MarketObject buyHealth(MarketObject market)
+	public static MarketObject buyHealth(MarketObject market)
 	{
 		market.getPlayer().setAttack(market.getPlayer().getAttack() + 1);
 		
