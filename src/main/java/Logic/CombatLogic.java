@@ -1,10 +1,11 @@
 package Logic;
 
+import Models.Enemy;
 import dto.CombatObject;
 
 public class CombatLogic 
 {
-	public CombatObject playerAttack(CombatObject combat)
+	public static CombatObject playerAttack(CombatObject combat)
 	{
 		int attack = combat.getThePlayer().getAttack();
 		
@@ -17,7 +18,7 @@ public class CombatLogic
 		return combat;
 	}
 	
-	public CombatObject enemyAttack(CombatObject combat)
+	public static CombatObject enemyAttack(CombatObject combat)
 	{
 		int attack = combat.getTheEnemy().getAttack();
 		
@@ -30,7 +31,7 @@ public class CombatLogic
 		return combat;
 	}
 	
-	public CombatObject healPlayer(CombatObject combat)
+	public static CombatObject healPlayer(CombatObject combat)
 	{
 		if(combat.getThePlayer().getHealItems() > 0)
 		{
@@ -41,4 +42,9 @@ public class CombatLogic
 		
 		return combat;
 	}
+	
+	//public static Enemy createEnemy()
+	//{
+		
+	//}
 }
