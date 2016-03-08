@@ -8,6 +8,7 @@ var loginController = function($scope, $http, $location, userData) {
 		var config = {}
 		$http.post('/login', data, config)
 		.success(function (data, status, headers, config) {
+			console.log(data.userName);
 			$scope.UsernamePasswordError = data.IncorrectUsernameOrPassword;
 			if(!$scope.UsernamePasswordError) {
 				userData.userId = data.userId;
