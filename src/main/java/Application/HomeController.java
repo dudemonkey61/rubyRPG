@@ -126,7 +126,7 @@ public class HomeController {
 	@RequestMapping(value = "/combat/pve", method = RequestMethod.POST)
 	public @ResponseBody CombatObject startCombat(@RequestBody Player data) 
 	{
-		//CombatObject combat = new CombatObject(data,);
-		return new CombatObject(data, new Enemy("Something", 1, 1));
+		CombatObject combat = new CombatObject(data, CombatLogic.createEnemy(data));
+		return combat;
 	}
 }

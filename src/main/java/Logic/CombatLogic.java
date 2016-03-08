@@ -1,10 +1,14 @@
 package Logic;
 
+import java.util.Random;
+
 import Models.Enemy;
+import Models.Player;
 import dto.CombatObject;
 
 public class CombatLogic 
 {
+	private static Random rand = new Random();
 	public static CombatObject playerAttack(CombatObject combat)
 	{
 		int attack = combat.getThePlayer().getAttack();
@@ -43,8 +47,23 @@ public class CombatLogic
 		return combat;
 	}
 	
-	//public static Enemy createEnemy()
-	//{
+	public static Enemy createEnemy(Player player)
+	{
+		int attack = player.getAttack() + rand.nextInt(3) - 1;
+		int health = player.getHealth() + rand.nextInt(3) - 1;
 		
-	//}
+		if(attack <= 0)
+		{
+			attack = 1;
+		}
+		
+		if(health <= 0)
+		{
+			health = 1;
+		}
+		
+		Enemy newEnemy = new Enemy("Random Name", attack, health);
+		
+		return newEnemy;
+	}
 }
