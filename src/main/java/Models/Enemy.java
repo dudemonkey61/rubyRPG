@@ -12,6 +12,8 @@ public class Enemy
 		this.health = health;
 		this.attack = attack;
 	}
+	
+	public Enemy(){}
 
 	public String getName() 
 	{

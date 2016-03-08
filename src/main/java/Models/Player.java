@@ -1,21 +1,27 @@
 package Models;
 
-public class Character 
+public class Player 
 {
 	private int userId;
 	private int characterID;
 	private String characterName;
 	private int health;
 	private int attack;
+	private int healItems;
+	private int money;
 	
-	public Character(int userID, int characterID, String characterName, int health, int attack)
+	public Player(int userID, int characterID, String characterName, int health, int attack, int healItems, int money)
 	{
 		this.setUserId(userID);
 		this.setCharacterID(characterID);
 		this.setCharacterName(characterName);
 		this.setHealth(health);
 		this.setAttack(attack);
+		this.setHealItems(healItems);
+		this.setMoney(money);
 	}
+	
+	public Player(){}
 
 	public int getUserId()
 	{
@@ -65,5 +71,21 @@ public class Character
 	public void setAttack(int attack) 
 	{
 		this.attack = attack;
+	}
+
+	public int getHealItems() {
+		return healItems;
+	}
+
+	public void setHealItems(int healItems) {
+		this.healItems = healItems;
+	}
+
+	public int getMoney() {
+		return money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
 	}
 }

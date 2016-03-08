@@ -1,15 +1,8 @@
 package Application;
 
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Base64;
-import java.util.Random;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 import org.springframework.stereotype.Controller;
 //import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,11 +13,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.heroku.sdk.jdbc.DatabaseUrl;
 
+import Logic.CombatLogic;
+import Logic.MarketLogic;
+import Models.Player;
 import dataTransfer.LoginData;
 import dataTransfer.LoginValidation;
 import dataTransfer.RegisterData;
 //import Models.RegisterUserCredentials;
 import dataTransfer.ValidationCodes;
+import dto.CombatObject;
+import dto.MarketObject;
 
 @Controller
 public class HomeController {
@@ -39,6 +37,11 @@ public class HomeController {
 		return "users/login";
 	}
 	
+	@RequestMapping("/townPage")
+	public String townPage() {
+		return "town";
+	}
+	
 	@RequestMapping("/registerPage")
 	public String registerPage() {
 		return "users/register";
@@ -46,7 +49,12 @@ public class HomeController {
 	
 	@RequestMapping("/worldPage")
 	public String worldPage() {
-		return "worldPage";
+		return "world";
+	}
+	
+	@RequestMapping("/battlePage")
+	public String battlePage() {
+		return "battle";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -138,4 +146,123 @@ public class HomeController {
 //		return new RegisterUserCredentials();
 //	}
 	
+	@RequestMapping(value = "/buy/Attack", method = RequestMethod.POST)
+	public @ResponseBody MarketObject increaseAttack(@RequestBody MarketObject data) 
+	{
+		data = MarketLogic.buyAttack(data);
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET attack = '" + data.getPlayer().getAttack() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		return data;
+	}
+	
+	@RequestMapping(value = "/buy/Health", method = RequestMethod.POST)
+	public @ResponseBody MarketObject increaseHealth(@RequestBody MarketObject data) 
+	{
+		data = MarketLogic.buyHealth(data);
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET health = '" + data.getPlayer().getHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		return data;
+	}
+	
+	@RequestMapping(value = "/buy/Potion", method = RequestMethod.POST)
+	public @ResponseBody MarketObject addPotions(@RequestBody MarketObject data) 
+	{
+		data = MarketLogic.buyPotion(data);
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET healItems = '" + data.getPlayer().getHealItems() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		return data;
+	}
+	
+	@RequestMapping(value = "/combat/pve/Attack", method = RequestMethod.POST)
+	public @ResponseBody CombatObject increaseAttack(@RequestBody CombatObject data) 
+	{
+		data = CombatLogic.playerAttack(data);
+		data = CombatLogic.enemyAttack(data);
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET attack = '" + data.getThePlayer().getAttack() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		return data;
+	}
+	
+	@RequestMapping(value = "/combat/pve/Heal", method = RequestMethod.POST)
+	public @ResponseBody CombatObject increaseHealth(@RequestBody CombatObject data) 
+	{		
+		data = CombatLogic.healPlayer(data);
+		data = CombatLogic.enemyAttack(data);
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			//Table that relates characters to users:		usercharacters
+			//Columns:		characterid		chactername		health		attack		healingitems	zeni
+			//DataTypes:	int				string			int			int			int				int
+			//ResultSet character = stmtUser.executeQuery("SELECT health FROM Characters WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET health = '" + data.getThePlayer().getHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET healthitems = '" + data.getThePlayer().getHealItems() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			//while(character.next())
+			//{
+				//int health = character.getInt(1);
+			//}
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		
+		return data;
+	}
+	
+	@RequestMapping(value = "/combat/pve", method = RequestMethod.POST)
+	public @ResponseBody CombatObject startCombat(@RequestBody Player data) 
+	{
+		CombatObject combat = new CombatObject(data, CombatLogic.createEnemy(data));
+		return combat;
+	}
 }
