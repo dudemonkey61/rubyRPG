@@ -13,6 +13,8 @@ public class CombatObject
 		this.setThePlayer(thePlayer);
 		this.setTheEnemy(theEnemy);
 	}
+	
+	public CombatObject(){};
 
 	public Player getThePlayer() {
 		return thePlayer;

@@ -1,5 +1,29 @@
-canvas {
-	background-image: url("images/villageSprite.jpg");
-	background-repeat: no-repeat;
-	background-size: cover;
+.fullScreen {
+	height: 100%;
+	width: 100%;
+}
+
+.townImage {
+	width: 100%;
+	height: 80%;
+	display: inline-block;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+table, td, th {
+	border: 1px solid black;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th {
+	text-align:center
+}
+
+.inlined {
+	display:inline;
 }

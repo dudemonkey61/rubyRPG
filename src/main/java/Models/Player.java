@@ -20,6 +20,8 @@ public class Player
 		this.setHealItems(healItems);
 		this.setMoney(money);
 	}
+	
+	public Player(){}
 
 	public int getUserId()
 	{

@@ -1,7 +1,6 @@
 package Logic;
 
 import java.util.Random;
-
 import Models.Enemy;
 import Models.Player;
 import dto.CombatObject;

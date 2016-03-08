@@ -31,9 +31,9 @@ public class HomeController {
 		return "users/login";
 	}
 	
-	@RequestMapping("/town")
-	public String town() {
-		return "townPage";
+	@RequestMapping("/townPage")
+	public String townPage() {
+		return "town";
 	}
 	
 	@RequestMapping("/registerPage")
@@ -43,7 +43,12 @@ public class HomeController {
 	
 	@RequestMapping("/worldPage")
 	public String worldPage() {
-		return "worldPage";
+		return "world";
+	}
+	
+	@RequestMapping("/battlePage")
+	public String battlePage() {
+		return "battle";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -100,7 +105,7 @@ public class HomeController {
 		return data;
 	}
 	
-	@RequestMapping(value = "/buy/Attack", method = RequestMethod.POST)
+	@RequestMapping(value = "/buy/Potion", method = RequestMethod.POST)
 	public @ResponseBody MarketObject addPotions(@RequestBody MarketObject data) 
 	{
 		data = MarketLogic.buyPotion(data);

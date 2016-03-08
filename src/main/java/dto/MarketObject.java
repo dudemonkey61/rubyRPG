@@ -6,6 +6,8 @@ public class MarketObject
 {
 	private Player player;
 	
+	public MarketObject(){}
+	
 	public MarketObject(Player player)
 	{
 		setPlayer(player);
