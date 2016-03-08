@@ -1,7 +1,6 @@
 package Application;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -29,7 +28,6 @@ import dataTransfer.ValidationCodes;
 
 @Controller
 public class HomeController {
-	private int saltLen = 33;
 
 	@RequestMapping("/")
 	public String home() {
@@ -55,23 +53,6 @@ public class HomeController {
 	public @ResponseBody LoginValidation loginGet(@RequestBody LoginData data) {
 		LoginValidation code = new LoginValidation();
 		try {
-			Random random = new Random();
-			byte[] salt = new byte[16];
-			random.nextBytes(salt);
-			KeySpec spec = new PBEKeySpec("password".toCharArray(), salt, 65536, 128);
-			SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-			byte[] hash = f.generateSecret(spec).getEncoded();
-			Base64.Encoder enc = Base64.getEncoder();
-			System.out.printf("salt: %s%n", enc.encodeToString(salt));
-			System.out.printf("hash: %s%n", enc.encodeToString(hash));
-//			SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-//			byte[] salt = new byte[16];
-//			sr.nextBytes(salt);
-//			String newSalt = new String(salt);
-//			
-//			String pass = hash256(data.password, newSalt);
-			code.userName = enc.encodeToString(hash);
-			
 			Connection connection = DatabaseUrl.extract().getConnection();
 	        Statement stmtCount = connection.createStatement();
 	        Statement stmt = connection.createStatement();
@@ -94,39 +75,19 @@ public class HomeController {
 			code.databaseError = true;
 		}
         return code;
+//		return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 	}
 	
-	 private static String hash256(String passwordToHash, String salt) {
-        String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(salt.getBytes());
-            byte[] bytes = md.digest(passwordToHash.getBytes());
-            StringBuilder sb = new StringBuilder();
-
-            for (int i=0; i<bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            generatedPassword = sb.toString();
-        }
-        catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return generatedPassword;
-    }
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public @ResponseBody ValidationCodes registerTransfer(@RequestBody RegisterData data) {
 		ValidationCodes code = new ValidationCodes();
 		try {
-			
-
-			Connection connection = DatabaseUrl.extract().getConnection();
+	        Connection connection = DatabaseUrl.extract().getConnection();
 	        Statement stmtUser = connection.createStatement();
 	        Statement stmtEmail = connection.createStatement();
 	        Statement stmtInsert = connection.createStatement();
 	        ResultSet userName = stmtUser.executeQuery("SELECT count(*) FROM Users WHERE username = '" + data.userName + "'");
 	        ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users WHERE email = '" + data.email + "'");
-
 
 	        while (userName.next()) {
 	        	if(userName.getInt(1) != 0) {
@@ -144,14 +105,9 @@ public class HomeController {
 	        	code.PasswordMismatch = true;
 	        }
 	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
-	        	//insert into characters (charatername, health, attack) values ("", 10, 10)
-	        	//select characterid from characters where charactername = '" + charctername + "'
-	        	//insert into usercharacters (userid, characterid) values (userid, characterid)
 	        	stmtInsert.execute("Insert into Users (username, email, password) values ('" + data.userName + "','" + data.email + "','" + data.password + "')");
 	        }
-			//return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 		} catch (Exception e) {
-			//return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
 			code.databaseError = true;
 		}
 		return code;
