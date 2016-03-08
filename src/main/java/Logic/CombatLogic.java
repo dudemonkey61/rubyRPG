@@ -1,6 +1,5 @@
 package Logic;
 
-import Models.Enemy;
 import dto.CombatObject;
 
 public class CombatLogic 

@@ -1,11 +1,11 @@
 <div id="player">
-	<progress value="{{characterHealth}}" max="{{maxCharacterHealth}}"></progress>
+	<progress value="{{player.health}}" max="{{maxCharacterHealth}}"></progress>
 	<img src="css/images/genericCharacter.png"></img>
 	<button ng-click="attack()">Attack</button>
 	<button ng-click="heal()">Heal</button>
 </div>
 
 <div id="enemy">
-	<progress value="{{enemyHealth}}" max="{{maxEnemyHealth}}"></progress>
+	<progress value="{{enemy.health}}" max="{{maxEnemyHealth}}"></progress>
 	<img src="css/images/goblin.png"></img>
 </div>

@@ -1,22 +1,37 @@
 var townController = function($scope, $http, $location) {
 	$scope.thing = 'hello';
-	$scope.shopList = [{
-		name: 'sword',
-		price: 233,
-		description: 'A long sharp doubled edged blade'
-	}, {
-		name: 'hat',
-		price: 50,
-		description: 'A really cool hat'
-	}]
+	$scope.money = 100000;
+	
+	var object = { player: {userId: 1, characterID: 1, characterName: 'Charles', health: 10, attack: 1, healItems: 2, money: 1000} };
 	$scope.buyPotion = function() {
-		console.log('You bought 1 potion');
+		$http.post('/buy/Potion', object, {})
+		.success(function(data, status, headers, config) {
+			console.log(data);
+		})
+		.error(function(data, status, headers, config) {
+			console.error(data);
+		})
 	}
 	$scope.buyAttack = function() {
-		console.log('You bought 1 attack');
+		$http.post('/buy/Attack', object, {})
+		.success(function(data, status, headers, config) {
+			console.log(data);
+		})
+		.error(function(data, status, headers, config) {
+			console.error(data);
+		})
 	}
 	$scope.buyHealth = function() {
-		console.log('You bought 1 health');
+		$http.post('/buy/Health', object, {})
+		.success(function(data, status, headers, config) {
+			console.log(data);
+		})
+		.error(function(data, status, headers, config) {
+			console.error(data);
+		})
 	}
-	$scope.money = 100000
+	
+	$scope.toWorld = function() {
+		$location.path('/world');
+	}
 }

@@ -105,7 +105,7 @@ public class HomeController {
 		return data;
 	}
 	
-	@RequestMapping(value = "/buy/Attack", method = RequestMethod.POST)
+	@RequestMapping(value = "/buy/Potion", method = RequestMethod.POST)
 	public @ResponseBody MarketObject addPotions(@RequestBody MarketObject data) 
 	{
 		data = MarketLogic.buyPotion(data);

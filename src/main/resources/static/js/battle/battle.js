@@ -1,2 +1,2 @@
 angular.module('battle', [])
-	.controller('battleController', ['$scope', battleController])
+	.controller('battleController', ['$scope', '$http', battleController])
