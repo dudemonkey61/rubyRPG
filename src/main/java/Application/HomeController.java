@@ -2,10 +2,15 @@ package Application;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Base64;
+import java.util.Random;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 import org.springframework.stereotype.Controller;
 //import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,13 +55,22 @@ public class HomeController {
 	public @ResponseBody LoginValidation loginGet(@RequestBody LoginData data) {
 		LoginValidation code = new LoginValidation();
 		try {
-			SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+			Random random = new Random();
 			byte[] salt = new byte[16];
-			sr.nextBytes(salt);
-			String newSalt = new String(salt);
-			
-			String pass = hash256(data.password, newSalt);
-			code.userName = pass;
+			random.nextBytes(salt);
+			KeySpec spec = new PBEKeySpec("password".toCharArray(), salt, 65536, 128);
+			SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+			byte[] hash = f.generateSecret(spec).getEncoded();
+			Base64.Encoder enc = Base64.getEncoder();
+			System.out.printf("salt: %s%n", enc.encodeToString(salt));
+			System.out.printf("hash: %s%n", enc.encodeToString(hash));
+//			SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+//			byte[] salt = new byte[16];
+//			sr.nextBytes(salt);
+//			String newSalt = new String(salt);
+//			
+//			String pass = hash256(data.password, newSalt);
+			code.userName = enc.encodeToString(hash);
 			
 			Connection connection = DatabaseUrl.extract().getConnection();
 	        Statement stmtCount = connection.createStatement();
