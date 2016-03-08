@@ -1,5 +1,9 @@
 package Application;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.heroku.sdk.jdbc.DatabaseUrl;
+
 import Logic.CombatLogic;
 import Logic.MarketLogic;
-import Models.Enemy;
 import Models.Player;
-import dataTransfer.*;
+import dataTransfer.LoginData;
+import dataTransfer.RegisterData;
 import dto.CombatObject;
 //import Models.RegisterUserCredentials;
 import dto.MarketObject;
@@ -95,6 +101,19 @@ public class HomeController {
 	public @ResponseBody MarketObject increaseAttack(@RequestBody MarketObject data) 
 	{
 		data = MarketLogic.buyAttack(data);
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET attack = '" + data.getPlayer().getAttack() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
 		return data;
 	}
 	
@@ -102,6 +121,19 @@ public class HomeController {
 	public @ResponseBody MarketObject increaseHealth(@RequestBody MarketObject data) 
 	{
 		data = MarketLogic.buyHealth(data);
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET health = '" + data.getPlayer().getHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
 		return data;
 	}
 	
@@ -109,6 +141,20 @@ public class HomeController {
 	public @ResponseBody MarketObject addPotions(@RequestBody MarketObject data) 
 	{
 		data = MarketLogic.buyPotion(data);
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET healItems = '" + data.getPlayer().getHealItems() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
 		return data;
 	}
 	
@@ -117,14 +163,50 @@ public class HomeController {
 	{
 		data = CombatLogic.playerAttack(data);
 		data = CombatLogic.enemyAttack(data);
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET attack = '" + data.getThePlayer().getAttack() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
 		return data;
 	}
 	
 	@RequestMapping(value = "/combat/pve/Heal", method = RequestMethod.POST)
 	public @ResponseBody CombatObject increaseHealth(@RequestBody CombatObject data) 
-	{
+	{		
 		data = CombatLogic.healPlayer(data);
 		data = CombatLogic.enemyAttack(data);
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			//Table that relates characters to users:		usercharacters
+			//Columns:		characterid		chactername		health		attack		healingitems	zeni
+			//DataTypes:	int				string			int			int			int				int
+			//ResultSet character = stmtUser.executeQuery("SELECT health FROM Characters WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET health = '" + data.getThePlayer().getHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET healthitems = '" + data.getThePlayer().getHealItems() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			//while(character.next())
+			//{
+				//int health = character.getInt(1);
+			//}
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		
 		return data;
 	}
 	
