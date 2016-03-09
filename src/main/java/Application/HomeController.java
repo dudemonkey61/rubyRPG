@@ -155,6 +155,7 @@ public class HomeController {
 		{
 			Connection connection = DatabaseUrl.extract().getConnection();
 			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
 			stmtUser.execute("UPDATE Characters SET attack = '" + data.getPlayer().getAttack() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
 		} 
 		
@@ -175,7 +176,9 @@ public class HomeController {
 		{
 			Connection connection = DatabaseUrl.extract().getConnection();
 			Statement stmtUser = connection.createStatement();
-			stmtUser.execute("UPDATE Characters SET health = '" + data.getPlayer().getHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getPlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET maxhealth = '" + data.getPlayer().getMaxHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
 		} 
 		
 		catch (Exception e)
@@ -213,11 +216,22 @@ public class HomeController {
 		data = CombatLogic.playerAttack(data);
 		data = CombatLogic.enemyAttack(data);
 		
+		if(data.getThePlayer().getCurrentHealth() > 0 && data.getTheEnemy().getHealth() <= 0)
+		{
+			data = CombatLogic.survivingPlayer(data);
+		}
+		
+		if(data.getThePlayer().getCurrentHealth() <= 0)
+		{
+			data = CombatLogic.dieingPlayer(data);
+		}
+		
 		try 
 		{
 			Connection connection = DatabaseUrl.extract().getConnection();
 			Statement stmtUser = connection.createStatement();
-			stmtUser.execute("UPDATE Characters SET attack = '" + data.getThePlayer().getAttack() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getThePlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getThePlayer().getMoney() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
 		} 
 		
 		catch (Exception e)
@@ -234,6 +248,16 @@ public class HomeController {
 		data = CombatLogic.healPlayer(data);
 		data = CombatLogic.enemyAttack(data);
 		
+		if(data.getThePlayer().getCurrentHealth() > 0 && data.getTheEnemy().getHealth() <= 0)
+		{
+			data = CombatLogic.survivingPlayer(data);
+		}
+		
+		if(data.getThePlayer().getCurrentHealth() <= 0)
+		{
+			data = CombatLogic.dieingPlayer(data);
+		}
+		
 		try 
 		{
 			Connection connection = DatabaseUrl.extract().getConnection();
@@ -242,8 +266,9 @@ public class HomeController {
 			//Columns:		characterid		chactername		health		attack		healingitems	zeni
 			//DataTypes:	int				string			int			int			int				int
 			//ResultSet character = stmtUser.executeQuery("SELECT health FROM Characters WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
-			stmtUser.execute("UPDATE Characters SET health = '" + data.getThePlayer().getHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getThePlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
 			stmtUser.execute("UPDATE Characters SET healthitems = '" + data.getThePlayer().getHealItems() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getThePlayer().getMoney() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
 			//while(character.next())
 			//{
 				//int health = character.getInt(1);

@@ -5,17 +5,18 @@ public class Player
 	private int userId;
 	private int characterID;
 	private String characterName;
-	private int health;
+	private int currentHealth;
+	private int maxHealth;
 	private int attack;
 	private int healItems;
 	private int money;
 	
-	public Player(int userID, int characterID, String characterName, int health, int attack, int healItems, int money)
+	public Player(int userID, int characterID, String characterName, int currentHealth, int maxHealth, int attack, int healItems, int money)
 	{
 		this.setUserId(userID);
 		this.setCharacterID(characterID);
 		this.setCharacterName(characterName);
-		this.setHealth(health);
+		this.setMaxHealth(maxHealth);
 		this.setAttack(attack);
 		this.setHealItems(healItems);
 		this.setMoney(money);
@@ -53,14 +54,14 @@ public class Player
 		this.characterName = characterName;
 	}
 
-	public int getHealth() 
+	public int getMaxHealth() 
 	{
-		return health;
+		return maxHealth;
 	}
 
-	public void setHealth(int health) 
+	public void setMaxHealth(int maxHealth) 
 	{
-		this.health = health;
+		this.maxHealth = maxHealth;
 	}
 
 	public int getAttack()
@@ -87,5 +88,13 @@ public class Player
 
 	public void setMoney(int money) {
 		this.money = money;
+	}
+
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
+
+	public void setCurrentHealth(int currentHealth) {
+		this.currentHealth = currentHealth;
 	}
 }
