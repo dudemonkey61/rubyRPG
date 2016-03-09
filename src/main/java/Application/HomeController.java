@@ -118,7 +118,7 @@ public class HomeController {
 	        }
 	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
 	        	stmtInsert.execute("Insert into Users (username, email, password) values ('" + data.userName + "','" + data.email + "','" + data.password + "')");
-	        	stmtCharacterCreate.execute("Insert into Characters (charactername, attack, health) values ('" + data.userName + "', 10, 10)");
+	        	stmtCharacterCreate.execute("Insert into Characters (charactername, attack, maxhealth, currenthealth) values ('" + data.userName + "', 10, 10, 10)");
 	        	ResultSet userData = stmtUserData.executeQuery("SELECT * FROM user WHERE username = '" + data.userName + "'");
 	        	ResultSet characterData = stmtCharacterData.executeQuery("SELECT * FROM Characters WHERE charactername = '" + data.userName + "'");
 	        	userData.next();
