@@ -25,11 +25,11 @@ public class CombatLogic
 	{
 		int attack = combat.getTheEnemy().getAttack();
 		
-		int health = combat.getThePlayer().getHealth();
+		int health = combat.getThePlayer().getCurrentHealth();
 		
 		int damage = health - attack;
 		
-		combat.getThePlayer().setHealth(damage);
+		combat.getThePlayer().setCurrentHealth(damage);
 		
 		return combat;
 	}
@@ -40,8 +40,23 @@ public class CombatLogic
 		{
 			combat.getThePlayer().setHealItems(combat.getThePlayer().getHealItems() - 1);
 			
-			combat.getThePlayer().setHealth(combat.getThePlayer().getHealth() + 1);
+			combat.getThePlayer().setCurrentHealth(combat.getThePlayer().getCurrentHealth() + 1);
 		}
+		
+		return combat;
+	}
+
+	public static CombatObject survivingPlayer(CombatObject combat)
+	{
+		combat.getThePlayer().setCurrentHealth(combat.getThePlayer().getMaxHealth());
+		combat.getThePlayer().setMoney(combat.getThePlayer().getMoney() + 10);
+		
+		return combat;
+	}
+	
+	public static CombatObject dieingPlayer(CombatObject combat)
+	{
+		combat.getThePlayer().setCurrentHealth(combat.getThePlayer().getMaxHealth());
 		
 		return combat;
 	}
@@ -49,7 +64,7 @@ public class CombatLogic
 	public static Enemy createEnemy(Player player)
 	{
 		int attack = player.getAttack() + rand.nextInt(3) - 1;
-		int health = player.getHealth() + rand.nextInt(3) - 1;
+		int health = player.getMaxHealth() + rand.nextInt(3) - 1;
 		
 		if(attack <= 0)
 		{

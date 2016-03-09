@@ -35,3 +35,23 @@ th {
 .inlined {
 	display:inline;
 }
+
+.characterImage {
+	width: 25%;
+	margin: auto;
+	display:inherit;
+}
+
+progress {
+	width: 100%;
+}
+
+.partialWidth {
+	width: 50%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.centerText {
+	text-align:center;
+}
