@@ -123,7 +123,7 @@ public class HomeController {
 	        	ResultSet characterData = stmtCharacterData.executeQuery("SELECT * FROM Characters WHERE charactername = '" + data.userName + "'");
 	        	userData.next();
 	        	characterData.next();
-	        	stmtCharacterRelate.execute("Insert into CharacterUsers (userid, characterid) values (" + userData.getInt(1) + ", " + characterData.getInt(1) + ")");
+	        	stmtCharacterRelate.execute("Insert into userCharacters (userid, characterid) values (" + userData.getInt(1) + ", " + characterData.getInt(1) + ")");
 	        }
 		} catch (Exception e) {
 			code.databaseError = true;
