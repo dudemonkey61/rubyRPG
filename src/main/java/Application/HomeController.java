@@ -93,6 +93,10 @@ public class HomeController {
 	        Statement stmtUser = connection.createStatement();
 	        Statement stmtEmail = connection.createStatement();
 	        Statement stmtInsert = connection.createStatement();
+	        Statement stmtCharacterCreate = connection.createStatement();
+	        Statement stmtCharacterData = connection.createStatement();
+	        Statement stmtUserData = connection.createStatement();
+	        Statement stmtCharacterRelate = connection.createStatement();
 	        ResultSet userName = stmtUser.executeQuery("SELECT count(*) FROM Users WHERE username = '" + data.userName + "'");
 	        ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users WHERE email = '" + data.email + "'");
 
@@ -113,6 +117,26 @@ public class HomeController {
 	        }
 	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
 	        	stmtInsert.execute("Insert into Users (username, email, password) values ('" + data.userName + "','" + data.email + "','" + data.password + "')");
+	        	code.counter = 1;
+	        	stmtCharacterCreate.execute("Insert into Characters (charactername, attack, maxhealth, currenthealth) values ('" + data.userName + "', 10, 10, 10)");
+	        	code.counter = 2;
+	        	ResultSet userData = stmtUserData.executeQuery("SELECT userID FROM user WHERE username = '" + data.userName + "'");
+	        	code.counter = 3;
+	        	ResultSet characterData = stmtCharacterData.executeQuery("SELECT characterID FROM Characters WHERE charactername = '" + data.userName + "'");
+	        	code.counter = 4;
+	        	int userID = -1;
+	        	int characterID = -1;
+	        	code.counter = userID;
+	        	while (userData.next()) {
+	        		userID = userData.getInt(1);
+		        	code.counter = userID;
+	        	}
+	        	code.counter = userID;
+	        	while (characterData.next()) {
+	        		characterID = characterData.getInt(1);
+	        	}
+	        	code.counter = userID;
+	        	stmtCharacterRelate.execute("Insert into userCharacters (userid, characterid) values (" + userID + ", " + characterID + ")");
 	        }
 		} catch (Exception e) {
 			code.databaseError = true;
@@ -154,6 +178,7 @@ public class HomeController {
 		{
 			Connection connection = DatabaseUrl.extract().getConnection();
 			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
 			stmtUser.execute("UPDATE Characters SET attack = '" + data.getPlayer().getAttack() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
 		} 
 		
@@ -174,7 +199,9 @@ public class HomeController {
 		{
 			Connection connection = DatabaseUrl.extract().getConnection();
 			Statement stmtUser = connection.createStatement();
-			stmtUser.execute("UPDATE Characters SET health = '" + data.getPlayer().getHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getPlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET maxhealth = '" + data.getPlayer().getMaxHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
 		} 
 		
 		catch (Exception e)
@@ -212,11 +239,22 @@ public class HomeController {
 		data = CombatLogic.playerAttack(data);
 		data = CombatLogic.enemyAttack(data);
 		
+		if(data.getThePlayer().getCurrentHealth() > 0 && data.getTheEnemy().getHealth() <= 0)
+		{
+			data = CombatLogic.survivingPlayer(data);
+		}
+		
+		if(data.getThePlayer().getCurrentHealth() <= 0)
+		{
+			data = CombatLogic.dieingPlayer(data);
+		}
+		
 		try 
 		{
 			Connection connection = DatabaseUrl.extract().getConnection();
 			Statement stmtUser = connection.createStatement();
-			stmtUser.execute("UPDATE Characters SET attack = '" + data.getThePlayer().getAttack() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getThePlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getThePlayer().getMoney() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
 		} 
 		
 		catch (Exception e)
@@ -233,6 +271,16 @@ public class HomeController {
 		data = CombatLogic.healPlayer(data);
 		data = CombatLogic.enemyAttack(data);
 		
+		if(data.getThePlayer().getCurrentHealth() > 0 && data.getTheEnemy().getHealth() <= 0)
+		{
+			data = CombatLogic.survivingPlayer(data);
+		}
+		
+		if(data.getThePlayer().getCurrentHealth() <= 0)
+		{
+			data = CombatLogic.dieingPlayer(data);
+		}
+		
 		try 
 		{
 			Connection connection = DatabaseUrl.extract().getConnection();
@@ -241,8 +289,9 @@ public class HomeController {
 			//Columns:		characterid		chactername		health		attack		healingitems	zeni
 			//DataTypes:	int				string			int			int			int				int
 			//ResultSet character = stmtUser.executeQuery("SELECT health FROM Characters WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
-			stmtUser.execute("UPDATE Characters SET health = '" + data.getThePlayer().getHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getThePlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
 			stmtUser.execute("UPDATE Characters SET healthitems = '" + data.getThePlayer().getHealItems() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getThePlayer().getMoney() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
 			//while(character.next())
 			//{
 				//int health = character.getInt(1);
