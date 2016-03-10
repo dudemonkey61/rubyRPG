@@ -121,9 +121,15 @@ public class HomeController {
 	        	stmtCharacterCreate.execute("Insert into Characters (charactername, attack, maxhealth, currenthealth) values ('" + data.userName + "', 10, 10, 10)");
 	        	ResultSet userData = stmtUserData.executeQuery("SELECT * FROM user WHERE username = '" + data.userName + "'");
 	        	ResultSet characterData = stmtCharacterData.executeQuery("SELECT * FROM Characters WHERE charactername = '" + data.userName + "'");
-	        	userData.next();
-	        	characterData.next();
-	        	stmtCharacterRelate.execute("Insert into userCharacters (userid, characterid) values (" + userData.getInt(1) + ", " + characterData.getInt(1) + ")");
+	        	int userID = -1;
+	        	int characterID = -1;
+	        	while (userData.next()) {
+	        		userID = userData.getInt(1);
+	        	}
+	        	while (characterData.next()) {
+	        		characterID = characterData.getInt(1);
+	        	}
+	        	stmtCharacterRelate.execute("Insert into userCharacters (userid, characterid) values (" + userID + ", " + characterID + ")");
 	        }
 		} catch (Exception e) {
 			code.databaseError = true;
