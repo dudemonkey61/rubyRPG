@@ -129,6 +129,7 @@ public class HomeController {
 	        	while (characterData.next()) {
 	        		characterID = characterData.getInt(1);
 	        	}
+	        	code.counter = userID;
 	        	stmtCharacterRelate.execute("Insert into userCharacters (userid, characterid) values (" + userID + ", " + characterID + ")");
 	        }
 		} catch (Exception e) {
