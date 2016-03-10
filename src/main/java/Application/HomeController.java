@@ -123,9 +123,12 @@ public class HomeController {
 	        	ResultSet characterData = stmtCharacterData.executeQuery("SELECT characterID FROM Characters WHERE charactername = '" + data.userName + "'");
 	        	int userID = -1;
 	        	int characterID = -1;
+	        	code.counter = userID;
 	        	while (userData.next()) {
 	        		userID = userData.getInt(1);
+		        	code.counter = userID;
 	        	}
+	        	code.counter = userID;
 	        	while (characterData.next()) {
 	        		characterID = characterData.getInt(1);
 	        	}
