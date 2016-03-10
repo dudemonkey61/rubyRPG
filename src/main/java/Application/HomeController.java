@@ -93,7 +93,11 @@ public class HomeController {
 	        Connection connection = DatabaseUrl.extract().getConnection();
 	        Statement stmtUser = connection.createStatement();
 	        Statement stmtEmail = connection.createStatement();
-
+	        Statement stmtInsert = connection.createStatement();
+	        Statement stmtCharacterCreate = connection.createStatement();
+	        Statement stmtUserData = connection.createStatement();
+	        Statement stmtCharacterData = connection.createStatement();
+	        Statement stmtCharacterRelate = connection.createStatement();
 	        ResultSet userName = stmtUser.executeQuery("SELECT count(*) FROM Users WHERE username = '" + data.userName + "'");
 	        ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users WHERE email = '" + data.email + "'");
 
@@ -112,40 +116,20 @@ public class HomeController {
 	        if(!newPassword.equals(newConfirmPassword)) {
 	        	code.PasswordMismatch = true;
 	        }
-	        stmtUser.close();
-	        stmtEmail.close();
 	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
-		        Statement stmtInsert = connection.createStatement();
-		        Statement stmtCharacterCreate = connection.createStatement();
-		        stmtInsert.execute("Insert into Users (username, email, password) values ('" + data.userName + "','" + data.email + "','" + data.password + "')");
-	        	code.counter = 1;
+	        	stmtInsert.execute("Insert into Users (username, email, password) values ('" + data.userName + "','" + data.email + "','" + data.password + "')");
 	        	stmtCharacterCreate.execute("Insert into Characters (charactername, attack, maxhealth, currenthealth) values ('" + data.userName + "', 10, 10, 10)");
-	        	code.counter = 2;
-	        	stmtInsert.close();
-	        	stmtCharacterCreate.close();
-		        Statement stmtUserData = connection.createStatement();
-		        Statement stmtCharacterData = connection.createStatement();
-	        	ResultSet userData = stmtUserData.executeQuery("SELECT userID FROM user WHERE username = '" + data.userName + "'");
-	        	code.counter = 3;
+	        	ResultSet userData = stmtUserData.executeQuery("SELECT userID FROM users WHERE username = '" + data.userName + "'");
 	        	ResultSet characterData = stmtCharacterData.executeQuery("SELECT characterID FROM Characters WHERE charactername = '" + data.userName + "'");
-	        	code.counter = 4;
-	        	stmtUserData.close();
-	        	stmtCharacterData.close();
 	        	int userID = -1;
 	        	int characterID = -1;
-	        	code.counter = userID;
 	        	while (userData.next()) {
 	        		userID = userData.getInt(1);
-		        	code.counter = userID;
 	        	}
-	        	code.counter = userID;
 	        	while (characterData.next()) {
 	        		characterID = characterData.getInt(1);
 	        	}
-	        	code.counter = userID;
-		        Statement stmtCharacterRelate = connection.createStatement();
 	        	stmtCharacterRelate.execute("Insert into userCharacters (userid, characterid) values (" + userID + ", " + characterID + ")");
-	        	stmtCharacterRelate.close();
 	        }
 		} catch (Exception e) {
 			code.databaseError = true;
