@@ -1,2 +1,2 @@
-angular.module('battle', [])
-	.controller('battleController', ['$scope', '$http', battleController])
+angular.module('battle', ['userInfo'])
+	.controller('battleController', ['$scope', '$http', 'userData', battleController])

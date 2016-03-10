@@ -1,25 +1,27 @@
-<div class="row centerText">
-	<div class="col-md-6">
-		<h1>{{player.characterName}}</h1>
-		<div class="partialWidth">
-			<h3>{{player.health}}</h3>
-			<progress value="{{player.health}}" max="{{maxCharacterHealth}}"></progress>
+<div class="fullScreen forestBackground">
+	<div class="row centerText verticallyCenter">
+		<div class="col-md-6">
+			<h1 style="color: aliceblue">{{player.characterName}}</h1>
+			<div class="partialWidth">
+				<h3 style="color: aliceblue">{{player.health}}</h3>
+				<progress value="{{player.health}}" max="{{maxCharacterHealth}}"></progress>
+			</div>
+			<br></br>
+			<img class="characterImage" src="css/images/genericCharacter.png"></img>
+			<br></br>
+			<br></br>
+			<button class="battleButton" ng-click="attack()">Attack</button>
+			<button class="battleButton" ng-click="heal()">Heal</button>
 		</div>
-		<br></br>
-		<img class="characterImage" src="css/images/genericCharacter.png"></img>
-		<br></br>
-		<br></br>
-		<button ng-click="attack()">Attack</button>
-		<button ng-click="heal()">Heal</button>
-	</div>
-	
-	<div class="col-md-6">
-		<h1>{{enemy.name}}</h1>
-		<div class="partialWidth">
-			<h3>{{enemy.health}}</h3>
-			<progress value="{{enemy.health}}" max="{{maxEnemyHealth}}"></progress>
+		
+		<div class="col-md-6">
+			<h1 style="color: aliceblue">{{enemy.name}}</h1>
+			<div class="partialWidth">
+				<h3 style="color: aliceblue">{{enemy.health}}</h3>
+				<progress value="{{enemy.health}}" max="{{maxEnemyHealth}}"></progress>
+			</div>
+			<br></br>
+			<img class="characterImage" src="css/images/goblin.png"></img>
 		</div>
-		<br></br>
-		<img class="characterImage" src="css/images/goblin.png"></img>
 	</div>
 </div>

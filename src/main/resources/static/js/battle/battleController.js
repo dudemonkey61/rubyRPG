@@ -1,16 +1,21 @@
-var battleController = function($scope, $http) {
-	
+var battleController = function($scope, $http, userData) {	
 	$scope.maxCharacterHealth = 10;
 	$scope.maxEnemyHealth = 10;
 
 	$scope.enemy = {name: "Goblin", health: 10, attack: 1};
-	$scope.player = {userId: 1, characterID: 1, characterName: 'Charles', health: 10, attack: 1, healItems: 2, money: 1000};
+	
+	var refreshScopePlayer = function() {
+		$scope.player = userData.character;
+	}
+	refreshScopePlayer();
 	
 	var generateEnemy = function() {		
 		$http.post('/combat/pve', $scope.player, {})
 		.success(function(data, status, headers, config) {
-			$scope.player = data.thePlayer;
+			console.log(data);
+			userData.character = data.thePlayer;
 			$scope.enemy = data.theEnemy;
+			refreshScopePlayer();
 		})
 		.error(function(data, status, headers, config) {
 			console.error(data);
@@ -22,9 +27,10 @@ var battleController = function($scope, $http) {
 		
 		$http.post('/combat/pve/Attack', combatObject, {})
 		.success(function(data, status, headers, config) {
-			console.log(data.thePlayer);
-			$scope.player = data.thePlayer;
+			console.log(data);
+			userData.character = data.thePlayer;
 			$scope.enemy = data.theEnemy;
+			refreshScopePlayer();
 		})
 		.error(function(data, status, headers, config) {
 			console.error(data);
@@ -36,13 +42,15 @@ var battleController = function($scope, $http) {
 		
 		$http.post('/combat/pve/Heal', combatObject, {})
 		.success(function(data, status, headers, config) {
-			console.log(data.thePlayer);
-			$scope.player = data.thePlayer;
+			console.log(data);
+			userData.character = data.thePlayer;
 			$scope.enemy = data.theEnemy;
+			refreshScopePlayer();
 		})
 		.error(function(data, status, headers, config) {
 			console.error(data);
 		})
 	}
+	
 	generateEnemy();
 }

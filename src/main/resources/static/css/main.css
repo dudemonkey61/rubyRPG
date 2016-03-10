@@ -1,14 +1,25 @@
-canvas {
-	background-image: url("images/villageSprite.jpg");
-	background-repeat: no-repeat;
-	background-size: cover;
-}
 .error {
 	color: red;
 }
 .fullScreen {
 	height: 100%;
 	width: 100%;
+}
+
+.forestBackground {
+	background-image: url("images/forestBattleBackground.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.verticallyCenter {
+	position: relative;
+  	top: 10%;
+}
+
+.battleButton {
+	width: 30%;
+	font-size: 2em;
 }
 
 .townImage {
@@ -54,4 +65,8 @@ progress {
 
 .centerText {
 	text-align:center;
+}
+
+html, body {
+	height: 100%;
 }
