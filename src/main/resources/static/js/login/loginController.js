@@ -11,7 +11,14 @@ var loginController = function($scope, $http, $location, userData) {
 			$scope.UsernamePasswordError = data.IncorrectUsernameOrPassword;
 			if(!$scope.UsernamePasswordError) {
 				userData.userId = data.userId;
-				userData.userName = data.userName;
+				userData.characterId = data.playerData.getCharacterID();
+				userData.characterName = data.playerData.getCharacterName();
+				userData.currentHealth = data.playerData.getCurrentHealth();
+				userData.maxHealth = data.playerData.getMaxHealth();
+				userData.attack = data.playerData.getAttack();
+				userData.healingItems = data.playerData.getHealItems();
+				userData.money = data.playerData.getMoney();
+				userData.town = data.playerData.getTown();
 				$location.path('/world');
 			}
 		})

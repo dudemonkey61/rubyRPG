@@ -6,6 +6,8 @@ public class ValidationCodes {
 	public boolean PasswordMismatch;
 	public boolean databaseError;
 	public int counter;
+	public boolean UsernameEmpty;
+	public boolean EmailEmpty;
 	
 	public ValidationCodes() {
 		UsernameTaken = false;
@@ -13,5 +15,7 @@ public class ValidationCodes {
 		PasswordMismatch = false;
 		databaseError = false;
 		counter = 0;
+		UsernameEmpty = false;
+		EmailEmpty = false;
 	}
 }
