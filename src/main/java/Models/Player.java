@@ -10,6 +10,7 @@ public class Player
 	private int attack;
 	private int healItems;
 	private int money;
+	private String town;
 	
 	public Player(int userID, int characterID, String characterName, int currentHealth, int maxHealth, int attack, int healItems, int money)
 	{
@@ -20,6 +21,7 @@ public class Player
 		this.setAttack(attack);
 		this.setHealItems(healItems);
 		this.setMoney(money);
+		this.setTown(characterName);
 	}
 	
 	public Player(){}
@@ -96,5 +98,13 @@ public class Player
 
 	public void setCurrentHealth(int currentHealth) {
 		this.currentHealth = currentHealth;
+	}
+
+	public String getTown() {
+		return town;
+	}
+
+	public void setTown(String town) {
+		this.town = town;
 	}
 }

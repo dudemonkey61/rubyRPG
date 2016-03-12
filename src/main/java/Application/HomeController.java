@@ -255,11 +255,15 @@ public class HomeController {
 	public @ResponseBody CombatObject increaseAttack(@RequestBody CombatObject data) 
 	{
 		data = CombatLogic.playerAttack(data);
-		data = CombatLogic.enemyAttack(data);
 		
 		if(data.getThePlayer().getCurrentHealth() > 0 && data.getTheEnemy().getHealth() <= 0)
 		{
 			data = CombatLogic.survivingPlayer(data);
+		}
+		
+		else
+		{
+			data = CombatLogic.enemyAttack(data);
 		}
 		
 		if(data.getThePlayer().getCurrentHealth() <= 0)
@@ -287,11 +291,15 @@ public class HomeController {
 	public @ResponseBody CombatObject increaseHealth(@RequestBody CombatObject data) 
 	{		
 		data = CombatLogic.healPlayer(data);
-		data = CombatLogic.enemyAttack(data);
 		
 		if(data.getThePlayer().getCurrentHealth() > 0 && data.getTheEnemy().getHealth() <= 0)
 		{
 			data = CombatLogic.survivingPlayer(data);
+		}
+		
+		else
+		{
+			data = CombatLogic.enemyAttack(data);
 		}
 		
 		if(data.getThePlayer().getCurrentHealth() <= 0)
@@ -329,6 +337,19 @@ public class HomeController {
 	public @ResponseBody CombatObject startCombat(@RequestBody Player data) 
 	{
 		CombatObject combat = new CombatObject(data, CombatLogic.createEnemy(data));
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET town = '" + data.getTown() + "'  WHERE characterid = '" + data.getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
 		return combat;
 	}
 }
