@@ -312,6 +312,19 @@ public class HomeController {
 	public @ResponseBody CombatObject startCombat(@RequestBody Player data) 
 	{
 		CombatObject combat = new CombatObject(data, CombatLogic.createEnemy(data));
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET town = '" + data.getTown() + "'  WHERE characterid = '" + data.getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
 		return combat;
 	}
 }
