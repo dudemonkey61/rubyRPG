@@ -1,9 +1,5 @@
 var worldController = function($scope, $window, $location) {
-	$scope.toTown = function() {
-		$location.path('/town');
-	}
-	
-	$scope.toBattle = function() {
+	$scope.toBattle = function(town) {
 		$location.path('/battle');
 	}
 }

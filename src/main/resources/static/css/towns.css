@@ -1,0 +1,41 @@
+#town1 {
+	position:absolute;
+	left: 750px;
+	top: 80px;
+}
+
+#town2 {
+	position:absolute;
+	left: 160px;
+	top: 300px;
+}
+
+#town3 {
+	position:absolute;
+	left: 750px;
+	top: 370px;
+}
+
+#town4 {
+	position:absolute;
+	left: 200px;
+	top: 550px;
+}
+
+#town5 {
+	position:absolute;
+	left: 1080px;
+	top: 610px;
+}
+
+#town6 {
+	position:absolute;
+	left: 1570px;
+	top: 500px;
+}
+
+#town7 {
+	position:absolute;
+	left: 1230px;
+	top: 150px;
+}

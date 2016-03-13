@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +18,6 @@ import Models.Player;
 import dataTransfer.LoginData;
 import dataTransfer.LoginValidation;
 import dataTransfer.RegisterData;
-//import Models.RegisterUserCredentials;
 import dataTransfer.ValidationCodes;
 import dto.CombatObject;
 import dto.MarketObject;
@@ -161,48 +159,23 @@ public class HomeController {
 		return code;
 	}
 	
-//	@RequestMapping(value = "/validate", method = RequestMethod.POST)
-//	public String registerPost(@ModelAttribute("registerUserCredentials") RegisterUserCredentials userCredentials, BindingResult result) {
-//		try {
-//	        URI dbUri = new URI("postgres://fghhopulwiaynq:OfvO_N_KLpwGqwbOZY7wEwKfL_@ec2-54-221-201-165.compute-1.amazonaws.com:5432/df02650vnkne80");
-//			String dbusername = dbUri.getUserInfo().split(":")[0];
-//			String dbpassword = dbUri.getUserInfo().split(":")[1];
-//	        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-//	        
-//	        System.out.println(userCredentials.getUserName());
-//	        System.out.println(userCredentials.getEmail());
-//	        System.out.println(userCredentials.getPassword());
-//	        System.out.println(userCredentials.getConfirmPassword());
-//	        //"Select * from Users
-//	        
-//			return "redirect:login";
-//		} catch (Exception e) {
-//			return registerTransfer();
-//		}
-//	}
-//	
-//	@ModelAttribute("registerUserCredentials")
-//	public RegisterUserCredentials getRegisterUserCredentials() {
-//		return new RegisterUserCredentials();
-//	}
-	
 	@RequestMapping(value = "/buy/Attack", method = RequestMethod.POST)
 	public @ResponseBody MarketObject increaseAttack(@RequestBody MarketObject data) 
 	{
 		data = MarketLogic.buyAttack(data);
 		
-//		try 
-//		{
-//			Connection connection = DatabaseUrl.extract().getConnection();
-//			Statement stmtUser = connection.createStatement();
-//			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-//			stmtUser.execute("UPDATE Characters SET attack = '" + data.getPlayer().getAttack() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-//		} 
-//		
-//		catch (Exception e)
-//		{
-//			System.out.println(e);
-//		}
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET attack = '" + data.getPlayer().getAttack() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
 		
 		return data;
 	}
@@ -212,19 +185,19 @@ public class HomeController {
 	{
 		data = MarketLogic.buyHealth(data);
 		
-//		try 
-//		{
-//			Connection connection = DatabaseUrl.extract().getConnection();
-//			Statement stmtUser = connection.createStatement();
-//			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-//			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getPlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-//			stmtUser.execute("UPDATE Characters SET maxhealth = '" + data.getPlayer().getMaxHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-//		} 
-//		
-//		catch (Exception e)
-//		{
-//			System.out.println(e);
-//		}
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getPlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET maxhealth = '" + data.getPlayer().getMaxHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
 		
 		return data;
 	}
@@ -234,19 +207,19 @@ public class HomeController {
 	{
 		data = MarketLogic.buyPotion(data);
 		
-//		try 
-//		{
-//			Connection connection = DatabaseUrl.extract().getConnection();
-//			Statement stmtUser = connection.createStatement();
-//			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-//			stmtUser.execute("UPDATE Characters SET healItems = '" + data.getPlayer().getHealItems() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-//		} 
-//		
-//		catch (Exception e)
-//		{
-//			System.out.println(e);
-//		}
-//		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET healItems = '" + data.getPlayer().getHealItems() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
 		return data;
 	}
 	
@@ -254,35 +227,35 @@ public class HomeController {
 	public @ResponseBody CombatObject increaseAttack(@RequestBody CombatObject data) 
 	{
 		data = CombatLogic.playerAttack(data);
-//		
-//		if(data.getThePlayer().getCurrentHealth() > 0 && data.getTheEnemy().getHealth() <= 0)
-//		{
-//			data = CombatLogic.survivingPlayer(data);
-//		}
-//		
-//		else
-//		{
-//			data = CombatLogic.enemyAttack(data);
-//		}
-//		
-//		if(data.getThePlayer().getCurrentHealth() <= 0)
-//		{
-//			data = CombatLogic.dieingPlayer(data);
-//		}
-//		
-//		try 
-//		{
-//			Connection connection = DatabaseUrl.extract().getConnection();
-//			Statement stmtUser = connection.createStatement();
-//			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getThePlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
-//			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getThePlayer().getMoney() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
-//		} 
-//		
-//		catch (Exception e)
-//		{
-//			System.out.println(e);
-//		}
-//		
+		
+		if(data.getThePlayer().getCurrentHealth() > 0 && data.getTheEnemy().getHealth() <= 0)
+		{
+			data = CombatLogic.survivingPlayer(data);
+		}
+		
+		else
+		{
+			data = CombatLogic.enemyAttack(data);
+		}
+		
+		if(data.getThePlayer().getCurrentHealth() <= 0)
+		{
+			data = CombatLogic.dieingPlayer(data);
+		}
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getThePlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getThePlayer().getMoney() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
 		return data;
 	}
 	
@@ -291,42 +264,42 @@ public class HomeController {
 	{		
 		data = CombatLogic.healPlayer(data);
 		
-//		if(data.getThePlayer().getCurrentHealth() > 0 && data.getTheEnemy().getHealth() <= 0)
-//		{
-//			data = CombatLogic.survivingPlayer(data);
-//		}
-//		
-//		else
-//		{
-//			data = CombatLogic.enemyAttack(data);
-//		}
-//		
-//		if(data.getThePlayer().getCurrentHealth() <= 0)
-//		{
-//			data = CombatLogic.dieingPlayer(data);
-//		}
-//		
-//		try 
-//		{
-//			Connection connection = DatabaseUrl.extract().getConnection();
-//			Statement stmtUser = connection.createStatement();
-//			//Table that relates characters to users:		usercharacters
-//			//Columns:		characterid		chactername		health		attack		healingitems	zeni
-//			//DataTypes:	int				string			int			int			int				int
-//			//ResultSet character = stmtUser.executeQuery("SELECT health FROM Characters WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
-//			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getThePlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
-//			stmtUser.execute("UPDATE Characters SET healthitems = '" + data.getThePlayer().getHealItems() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
-//			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getThePlayer().getMoney() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
-//			//while(character.next())
-//			//{
-//				//int health = character.getInt(1);
-//			//}
-//		} 
-//		
-//		catch (Exception e)
-//		{
-//			System.out.println(e);
-//		}
+		if(data.getThePlayer().getCurrentHealth() > 0 && data.getTheEnemy().getHealth() <= 0)
+		{
+			data = CombatLogic.survivingPlayer(data);
+		}
+		
+		else
+		{
+			data = CombatLogic.enemyAttack(data);
+		}
+		
+		if(data.getThePlayer().getCurrentHealth() <= 0)
+		{
+			data = CombatLogic.dieingPlayer(data);
+		}
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			//Table that relates characters to users:		usercharacters
+			//Columns:		characterid		chactername		health		attack		healingitems	zeni
+			//DataTypes:	int				string			int			int			int				int
+			//ResultSet character = stmtUser.executeQuery("SELECT health FROM Characters WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getThePlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET healthitems = '" + data.getThePlayer().getHealItems() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getThePlayer().getMoney() + "'  WHERE characterid = '" + data.getThePlayer().getCharacterID() + "'");
+			//while(character.next())
+			//{
+				//int health = character.getInt(1);
+			//}
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
 		
 		
 		return data;
