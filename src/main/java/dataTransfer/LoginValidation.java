@@ -1,16 +1,16 @@
 package dataTransfer;
 
+import Models.Player;
+
 public class LoginValidation {
 	public boolean IncorrectUsernameOrPassword;
 	public boolean databaseError;
-	public int userId;
-	public String userName;
+	public Player playerData;
 	
 	public LoginValidation() {
 		IncorrectUsernameOrPassword = false;
 		databaseError = false;
-		userId = -1;
-		userName = "";
+		playerData = new Player();
 	}
 }
 	

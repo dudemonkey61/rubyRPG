@@ -63,7 +63,9 @@ public class HomeController {
 		try {
 			Connection connection = DatabaseUrl.extract().getConnection();
 	        Statement stmtCount = connection.createStatement();
-	        Statement stmt = connection.createStatement();
+	        Statement stmtUser = connection.createStatement();
+	        Statement stmtUserCharacter = connection.createStatement();
+	        Statement stmtCharacter = connection.createStatement();
 	        ResultSet user = stmtCount.executeQuery("SELECT count(*) FROM Users WHERE username = '" + data.userName + "' AND password = '" + data.password + "'");
 	        while (user.next()) {
 	        	if(user.getInt(1) == 0) {
@@ -71,12 +73,24 @@ public class HomeController {
 	        	}
 	        }
 	        if(!code.IncorrectUsernameOrPassword) {
-		        ResultSet userInfo = stmt.executeQuery("SELECT * FROM Users WHERE username = '" + data.userName + "' AND password = '" + data.password + "'");
+		        ResultSet userInfo = stmtUser.executeQuery("SELECT * FROM Users WHERE username = '" + data.userName + "' AND password = '" + data.password + "'");
 		        while (userInfo.next()) {
-		        	if(userInfo.getInt(1) != 0) {
-		        		code.userId = userInfo.getInt(1);
-		        		code.userName = userInfo.getString(2);
-		        	}
+	        		code.playerData.setUserId(userInfo.getInt(1));
+		        }
+		        ResultSet userCharacterInfo = stmtUserCharacter.executeQuery("SELECT * FROM userCharacters WHERE userid = '" + code.playerData.getUserId() + "'");
+		        while (userInfo.next()) {
+	        		code.playerData.setCharacterID(userCharacterInfo.getInt(2));
+		        }
+		        ResultSet characterInfo = stmtCharacter.executeQuery("SELECT * FROM Characters WHERE characterid = '" + code.playerData.getCharacterID() + "'");
+		        code.playerData.setCurrentHealth(characterInfo.getInt(2));
+		        while (userInfo.next()) {
+	        		code.playerData.setCharacterName(characterInfo.getString(2));
+	        		code.playerData.setCurrentHealth(characterInfo.getInt(3));
+	        		code.playerData.setMaxHealth(characterInfo.getInt(4));
+	        		code.playerData.setAttack(characterInfo.getInt(5));
+	        		code.playerData.setHealItems(characterInfo.getInt(6));
+	        		code.playerData.setMoney(characterInfo.getInt(7));
+	        		code.playerData.setTown(characterInfo.getString(8));
 		        }
 	        }
 		} catch (Exception e) {
@@ -89,47 +103,58 @@ public class HomeController {
 	public @ResponseBody ValidationCodes registerTransfer(@RequestBody RegisterData data) {
 		ValidationCodes code = new ValidationCodes();
 		try {
-	        Connection connection = DatabaseUrl.extract().getConnection();
-	        Statement stmtUser = connection.createStatement();
-	        Statement stmtEmail = connection.createStatement();
-	        Statement stmtInsert = connection.createStatement();
-	        Statement stmtCharacterCreate = connection.createStatement();
-	        Statement stmtUserData = connection.createStatement();
-	        Statement stmtCharacterData = connection.createStatement();
-	        Statement stmtCharacterRelate = connection.createStatement();
-	        ResultSet userName = stmtUser.executeQuery("SELECT count(*) FROM Users WHERE username = '" + data.userName + "'");
-	        ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users WHERE email = '" + data.email + "'");
-
-	        while (userName.next()) {
-	        	if(userName.getInt(1) != 0) {
-	        		code.UsernameTaken = true;
-	        	}
-	        }
-	        while (email.next()) {
-	        	if(email.getInt(1) != 0) {
-	        		code.EmailTaken = true;
-	        	}
-	        }
-	        String newPassword = data.password;
-	        String newConfirmPassword = data.confirmPassword;
-	        if(!newPassword.equals(newConfirmPassword)) {
-	        	code.PasswordMismatch = true;
-	        }
-	        if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
-	        	stmtInsert.execute("Insert into Users (username, email, password) values ('" + data.userName + "','" + data.email + "','" + data.password + "')");
-	        	stmtCharacterCreate.execute("Insert into Characters (charactername, attack, maxhealth, currenthealth) values ('" + data.userName + "', 10, 10, 10)");
-	        	ResultSet userData = stmtUserData.executeQuery("SELECT userID FROM users WHERE username = '" + data.userName + "'");
-	        	ResultSet characterData = stmtCharacterData.executeQuery("SELECT characterID FROM Characters WHERE charactername = '" + data.userName + "'");
-	        	int userID = -1;
-	        	int characterID = -1;
-	        	while (userData.next()) {
-	        		userID = userData.getInt(1);
-	        	}
-	        	while (characterData.next()) {
-	        		characterID = characterData.getInt(1);
-	        	}
-	        	stmtCharacterRelate.execute("Insert into userCharacters (userid, characterid) values (" + userID + ", " + characterID + ")");
-	        }
+			if(data.userName.isEmpty()) {
+				code.UsernameEmpty = true;
+			}
+			if(data.email.isEmpty()) {
+				code.EmailEmpty = true;
+			}
+			if(data.password.isEmpty() || data.confirmPassword.isEmpty()) {
+				code.PasswordMismatch = true;
+			}
+			if(!code.UsernameEmpty && !code.EmailEmpty && !code.PasswordMismatch) {
+				Connection connection = DatabaseUrl.extract().getConnection();
+				Statement stmtUser = connection.createStatement();
+				Statement stmtEmail = connection.createStatement();
+				Statement stmtInsert = connection.createStatement();
+				Statement stmtCharacterCreate = connection.createStatement();
+				Statement stmtUserData = connection.createStatement();
+				Statement stmtCharacterData = connection.createStatement();
+				Statement stmtCharacterRelate = connection.createStatement();
+				ResultSet userName = stmtUser.executeQuery("SELECT count(*) FROM Users WHERE username = '" + data.userName + "'");
+				ResultSet email = stmtEmail.executeQuery("SELECT count(*) FROM Users WHERE email = '" + data.email + "'");
+				
+				while (userName.next()) {
+					if(userName.getInt(1) != 0) {
+						code.UsernameTaken = true;
+					}
+				}
+				while (email.next()) {
+					if(email.getInt(1) != 0) {
+						code.EmailTaken = true;
+					}
+				}
+				String newPassword = data.password;
+				String newConfirmPassword = data.confirmPassword;
+				if(!newPassword.equals(newConfirmPassword)) {
+					code.PasswordMismatch = true;
+				}
+				if(!code.UsernameTaken && !code.EmailTaken && !code.PasswordMismatch) {
+					stmtInsert.execute("Insert into Users (username, email, password) values ('" + data.userName + "','" + data.email + "','" + data.password + "')");
+					stmtCharacterCreate.execute("Insert into Characters (charactername, attack, maxhealth, currenthealth) values ('" + data.userName + "', 10, 10, 10)");
+					ResultSet userData = stmtUserData.executeQuery("SELECT userID FROM users WHERE username = '" + data.userName + "'");
+					ResultSet characterData = stmtCharacterData.executeQuery("SELECT characterID FROM Characters WHERE charactername = '" + data.userName + "'");
+					int userID = -1;
+					int characterID = -1;
+					while (userData.next()) {
+						userID = userData.getInt(1);
+					}
+					while (characterData.next()) {
+						characterID = characterData.getInt(1);
+					}
+					stmtCharacterRelate.execute("Insert into userCharacters (userid, characterid) values (" + userID + ", " + characterID + ")");
+				}
+			}
 		} catch (Exception e) {
 			code.databaseError = true;
 		}
@@ -311,6 +336,19 @@ public class HomeController {
 	public @ResponseBody CombatObject startCombat(@RequestBody Player data) 
 	{
 		CombatObject combat = new CombatObject(data, CombatLogic.createEnemy(data));
+		
+		try 
+		{
+			Connection connection = DatabaseUrl.extract().getConnection();
+			Statement stmtUser = connection.createStatement();
+			stmtUser.execute("UPDATE Characters SET town = '" + data.getTown() + "'  WHERE characterid = '" + data.getCharacterID() + "'");
+		} 
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		
 		return combat;
 	}
 }
