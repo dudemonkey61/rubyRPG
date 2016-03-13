@@ -1,4 +1,4 @@
-var dummyModule = angular.module('rubyRPG', ['ngRoute', 'world', 'login', 'register', 'town', 'battle'])
+var dummyModule = angular.module('rubyRPG', ['ngRoute', 'world', 'login', 'register', 'town', 'battle',])
 
 .config(['$routeProvider', function($routeProvider) {
 	$routeProvider

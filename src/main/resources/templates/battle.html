@@ -1,10 +1,29 @@
+<script type="text/ng-template" id="userWin.html">
+	<div class="modal-body">
+		<h3>You win</h3>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="toTown()">Back to Town</button>
+		<button class="btn btn-primary" ng-click="toWorld()">To World Map</button>
+	</div>
+</script>
+
+<script type="text/ng-template" id="userLoss.html">
+	<div class="modal-body">
+		<h3>You Died</h3>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="toTown()">Back to Town</button>
+		<button class="btn btn-primary" ng-click="toWorld()">To World Map</button>
+	</div>
+</script>
+
 <div class="fullScreen forestBackground">
 	<div class="row centerText verticallyCenter">
 		<div class="col-md-6">
 			<h1 style="color: aliceblue">{{player.characterName}}</h1>
 			<div class="partialWidth">
-				<h3 style="color: aliceblue">{{player.health}}</h3>
-				<progress value="{{player.health}}" max="{{maxCharacterHealth}}"></progress>
+				<uib-progress class="progress-striped" value="player.currentHealth" max="player.maxHealth"><i>{{player.currentHealth}}/{{player.maxHealth}}</i></uib-progress>
 			</div>
 			<br></br>
 			<img class="characterImage" src="css/images/genericCharacter.png"></img>

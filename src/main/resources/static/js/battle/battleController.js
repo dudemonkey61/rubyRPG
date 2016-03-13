@@ -1,6 +1,5 @@
-var battleController = function($scope, $http, userData) {	
-	$scope.maxCharacterHealth = 10;
-	$scope.maxEnemyHealth = 10;
+var battleController = function($scope, $http, $uibModal, userData) {	
+	$scope.maxEnemyHealth;
 
 	$scope.enemy = {name: "Goblin", health: 10, attack: 1};
 	
@@ -12,9 +11,9 @@ var battleController = function($scope, $http, userData) {
 	var generateEnemy = function() {		
 		$http.post('/combat/pve', $scope.player, {})
 		.success(function(data, status, headers, config) {
-			console.log(data);
 			userData.character = data.thePlayer;
 			$scope.enemy = data.theEnemy;
+			$scope.maxEnemyHealth = data.theEnemy.health;
 			refreshScopePlayer();
 		})
 		.error(function(data, status, headers, config) {
@@ -27,10 +26,10 @@ var battleController = function($scope, $http, userData) {
 		
 		$http.post('/combat/pve/Attack', combatObject, {})
 		.success(function(data, status, headers, config) {
-			console.log(data);
 			userData.character = data.thePlayer;
 			$scope.enemy = data.theEnemy;
 			refreshScopePlayer();
+			determineEnded(data);
 		})
 		.error(function(data, status, headers, config) {
 			console.error(data);
@@ -42,14 +41,43 @@ var battleController = function($scope, $http, userData) {
 		
 		$http.post('/combat/pve/Heal', combatObject, {})
 		.success(function(data, status, headers, config) {
-			console.log(data);
 			userData.character = data.thePlayer;
 			$scope.enemy = data.theEnemy;
 			refreshScopePlayer();
+			determineEnded(data);
 		})
 		.error(function(data, status, headers, config) {
 			console.error(data);
 		})
+	}
+	
+	var playerWin = function() {
+		var thePopup = $uibModal.open({
+			animation: true,
+			templateUrl: 'userWin.html',
+			controller: 'userWinController',
+			size: 'lg',
+		})
+		userData.character.currentHealth = userData.character.maxHealth;
+	}
+	
+	var playerLoss = function() {
+		var thePopup = $uibModal.open({
+			animation: true,
+			templateUrl: 'userLoss.html',
+			controller: 'userLossController',
+			size: 'lg',
+		})
+		userData.character.currentHealth = userData.character.maxHealth;
+	}
+	
+	var determineEnded = function(data) {
+		if (data.thePlayer.currentHealth <= 0) {
+			playerLoss();
+		}
+		else if (data.theEnemy.health <= 0) {
+			playerWin();
+		}
 	}
 	
 	generateEnemy();

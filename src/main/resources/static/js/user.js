@@ -6,7 +6,8 @@ var userModule = angular.module('userInfo', [])
 				userId: 1,
 				characterID: 1,
 				characterName: 'Charles',
-				health: 10,
+				currentHealth: 10,
+				maxHealth: 10,
 				attack: 1,
 				healItems: 2,
 				money: 1000

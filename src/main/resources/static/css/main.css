@@ -12,6 +12,13 @@
 	background-size: cover;
 }
 
+.worldImage {
+	position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
+}
+
 .verticallyCenter {
 	position: relative;
   	top: 10%;
@@ -51,10 +58,6 @@ th {
 	width: 25%;
 	margin: auto;
 	display:inherit;
-}
-
-progress {
-	width: 100%;
 }
 
 .partialWidth {

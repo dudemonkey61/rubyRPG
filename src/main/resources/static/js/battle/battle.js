@@ -1,2 +1,4 @@
-angular.module('battle', ['userInfo'])
-	.controller('battleController', ['$scope', '$http', 'userData', battleController])
+angular.module('battle', ['userInfo', 'ui.bootstrap'])
+	.controller('userWinController', ['$scope', '$location', '$uibModalInstance', userWinController])
+	.controller('userLossController', ['$scope', '$location', '$uibModalInstance', userLossController])
+	.controller('battleController', ['$scope', '$http', '$uibModal', 'userData', battleController])
