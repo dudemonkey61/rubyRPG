@@ -1,2 +1,2 @@
-angular.module('town', [])
-	.controller('townController', ['$scope', '$http', '$location', townController])
+angular.module('town', ['userInfo'])
+	.controller('townController', ['$scope', '$http', '$location', 'userData', townController])

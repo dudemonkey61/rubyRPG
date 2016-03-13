@@ -1,2 +1,2 @@
-angular.module('world', [])
-	.controller('worldController', ['$scope', '$http', '$location', worldController])
+angular.module('world', ['userInfo'])
+	.controller('worldController', ['$scope', '$http', '$location', 'userData', worldController])

@@ -10,7 +10,7 @@ var loginController = function($scope, $http, $location, userData) {
 		.success(function (data, status, headers, config) {
 			$scope.UsernamePasswordError = data.IncorrectUsernameOrPassword;
 			if(!$scope.UsernamePasswordError) {
-				//userData.character = data.playerData;
+				userData.character = data.playerData;
 				$location.path('/world');
 			}
 		})
