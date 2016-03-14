@@ -1,9 +1,12 @@
 var townController = function($scope, $http, $location, userData) {	
+	$scope.money = userData.character.money;
 	$scope.buyPotion = function() {
 		var object = {player: userData.character}
 		$http.post('/buy/Potion', object, {})
 		.success(function(data, status, headers, config) {
 			userData.character = data.player;
+			console.log(data);
+			$scope.money = userData.character.money;
 		})
 		.error(function(data, status, headers, config) {
 			console.error(data);
@@ -14,6 +17,8 @@ var townController = function($scope, $http, $location, userData) {
 		$http.post('/buy/Attack', object, {})
 		.success(function(data, status, headers, config) {
 			userData.character = data.player;
+			console.log(data);
+			$scope.money = userData.character.money;
 		})
 		.error(function(data, status, headers, config) {
 			console.error(data);
@@ -24,6 +29,8 @@ var townController = function($scope, $http, $location, userData) {
 		$http.post('/buy/Health', object, {})
 		.success(function(data, status, headers, config) {
 			userData.character = data.player;
+			console.log(data);
+			$scope.money = userData.character.money;
 		})
 		.error(function(data, status, headers, config) {
 			console.error(data);
@@ -32,8 +39,5 @@ var townController = function($scope, $http, $location, userData) {
 	
 	$scope.toWorld = function() {
 		$location.path('/world');
-	}
-	$scope.money = function() {
-		return userData.money;
 	}
 }

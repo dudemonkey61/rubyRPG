@@ -14,6 +14,7 @@ var battleController = function($scope, $http, $uibModal, userData) {
 			userData.character = data.thePlayer;
 			$scope.enemy = data.theEnemy;
 			$scope.maxEnemyHealth = data.theEnemy.health;
+			console.log(data);
 			refreshScopePlayer();
 		})
 		.error(function(data, status, headers, config) {
@@ -28,6 +29,7 @@ var battleController = function($scope, $http, $uibModal, userData) {
 		.success(function(data, status, headers, config) {
 			userData.character = data.thePlayer;
 			$scope.enemy = data.theEnemy;
+			console.log(data);
 			refreshScopePlayer();
 			determineEnded(data);
 		})
@@ -43,6 +45,7 @@ var battleController = function($scope, $http, $uibModal, userData) {
 		.success(function(data, status, headers, config) {
 			userData.character = data.thePlayer;
 			$scope.enemy = data.theEnemy;
+			console.log(data);
 			refreshScopePlayer();
 			determineEnded(data);
 		})
