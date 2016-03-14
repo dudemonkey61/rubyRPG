@@ -19,16 +19,6 @@ var loginController = function($scope, $http, $location, userData) {
 				userData.healingItems = data.playerData.getHealItems();
 				userData.money = data.playerData.getMoney();
 				userData.town = data.playerData.getTown();
-				console.log("userId: " + userData.userId);
-				console.log("characterId: " + userData.characterId);
-				console.log("characterName: " + userData.characterName);
-				console.log("currentHealth: " + userData.currentHealth);
-				console.log("maxHealth: " + userData.maxHealth);
-				console.log("attack: " + userData.attack);
-				console.log("healingItems: " + userData.healingItems);
-				console.log("money: " + userData.money);
-				console.log("town: " + userData.town);
-				
 				$location.path('/world');
 			}
 		})
