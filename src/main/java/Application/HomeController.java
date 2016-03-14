@@ -80,7 +80,6 @@ public class HomeController {
 	        		code.playerData.setCharacterID(userCharacterInfo.getInt(2));
 		        }
 		        ResultSet characterInfo = stmtCharacter.executeQuery("SELECT * FROM Characters WHERE characterid = '" + code.playerData.getCharacterID() + "'");
-		        code.playerData.setCurrentHealth(characterInfo.getInt(2));
 		        while (characterInfo.next()) {
 	        		code.playerData.setCharacterName(characterInfo.getString(2));
 	        		code.playerData.setCurrentHealth(characterInfo.getInt(3));
