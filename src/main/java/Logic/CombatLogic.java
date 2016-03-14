@@ -76,7 +76,7 @@ public class CombatLogic
 			health = 1;
 		}
 		
-		Enemy newEnemy = new Enemy("Random Name", attack, health);
+		Enemy newEnemy = new Enemy("Random Name", health, attack);
 		
 		return newEnemy;
 	}
