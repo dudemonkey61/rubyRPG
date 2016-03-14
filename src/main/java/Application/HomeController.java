@@ -78,15 +78,15 @@ public class HomeController {
 	        		code.playerData.setUserId(userInfo.getInt(1));
 		        }
 		        ResultSet userCharacterInfo = stmtUserCharacter.executeQuery("SELECT * FROM userCharacters WHERE userid = '" + code.playerData.getUserId() + "'");
-		        while (userInfo.next()) {
-		        	if(userInfo.getInt(1) == code.playerData.getUserId()) {
+		        while (userCharacterInfo.next()) {
+		        	if(userCharacterInfo.getInt(1) == code.playerData.getUserId()) {
 		        		code.playerData.setCharacterID(userCharacterInfo.getInt(2));
 		        	}
 		        }
 		        ResultSet characterInfo = stmtCharacter.executeQuery("SELECT * FROM Characters WHERE characterid = '" + code.playerData.getCharacterID() + "'");
 		        code.playerData.setCurrentHealth(characterInfo.getInt(2));
-		        while (userInfo.next()) {
-		        	if(userInfo.getInt(1) == code.playerData.getCharacterID()) {
+		        while (characterInfo.next()) {
+		        	if(characterInfo.getInt(1) == code.playerData.getCharacterID()) {
 		        		code.playerData.setCharacterName(characterInfo.getString(2));
 	        			code.playerData.setCurrentHealth(characterInfo.getInt(3));
 	        			code.playerData.setMaxHealth(characterInfo.getInt(4));
