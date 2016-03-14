@@ -79,18 +79,22 @@ public class HomeController {
 		        }
 		        ResultSet userCharacterInfo = stmtUserCharacter.executeQuery("SELECT * FROM userCharacters WHERE userid = '" + code.playerData.getUserId() + "'");
 		        while (userInfo.next()) {
-	        		code.playerData.setCharacterID(userCharacterInfo.getInt(2));
+		        	if(userInfo.getInt(1) == code.playerData.getUserId()) {
+		        		code.playerData.setCharacterID(userCharacterInfo.getInt(2));
+		        	}
 		        }
 		        ResultSet characterInfo = stmtCharacter.executeQuery("SELECT * FROM Characters WHERE characterid = '" + code.playerData.getCharacterID() + "'");
 		        code.playerData.setCurrentHealth(characterInfo.getInt(2));
 		        while (userInfo.next()) {
-	        		code.playerData.setCharacterName(characterInfo.getString(2));
-	        		code.playerData.setCurrentHealth(characterInfo.getInt(3));
-	        		code.playerData.setMaxHealth(characterInfo.getInt(4));
-	        		code.playerData.setAttack(characterInfo.getInt(5));
-	        		code.playerData.setHealItems(characterInfo.getInt(6));
-	        		code.playerData.setMoney(characterInfo.getInt(7));
-	        		code.playerData.setTown(characterInfo.getString(8));
+		        	if(userInfo.getInt(1) == code.playerData.getCharacterID()) {
+		        		code.playerData.setCharacterName(characterInfo.getString(2));
+	        			code.playerData.setCurrentHealth(characterInfo.getInt(3));
+	        			code.playerData.setMaxHealth(characterInfo.getInt(4));
+	        			code.playerData.setAttack(characterInfo.getInt(5));
+	        			code.playerData.setHealItems(characterInfo.getInt(6));
+	        			code.playerData.setMoney(characterInfo.getInt(7));
+	        			code.playerData.setTown(characterInfo.getString(8));
+		        	}
 		        }
 	        }
 		} catch (Exception e) {
