@@ -161,19 +161,22 @@ public class HomeController {
 	@RequestMapping(value = "/buy/Attack", method = RequestMethod.POST)
 	public @ResponseBody MarketObject increaseAttack(@RequestBody MarketObject data) 
 	{
-		data = MarketLogic.buyAttack(data);
-		
-		try 
+		if(data.getPlayer().getMoney() > 0)
 		{
-			Connection connection = DatabaseUrl.extract().getConnection();
-			Statement stmtUser = connection.createStatement();
-			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-			stmtUser.execute("UPDATE Characters SET attack = '" + data.getPlayer().getAttack() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-		} 
+			data = MarketLogic.buyAttack(data);
 		
-		catch (Exception e)
-		{
-			System.out.println(e);
+			try 
+			{
+				Connection connection = DatabaseUrl.extract().getConnection();
+				Statement stmtUser = connection.createStatement();
+				stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+				stmtUser.execute("UPDATE Characters SET attack = '" + data.getPlayer().getAttack() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			} 
+			
+			catch (Exception e)
+			{
+				System.out.println(e);
+			}
 		}
 		
 		return data;
@@ -182,41 +185,47 @@ public class HomeController {
 	@RequestMapping(value = "/buy/Health", method = RequestMethod.POST)
 	public @ResponseBody MarketObject increaseHealth(@RequestBody MarketObject data) 
 	{
-		data = MarketLogic.buyHealth(data);
-		
-		try 
+		if(data.getPlayer().getMoney() > 0)
 		{
-			Connection connection = DatabaseUrl.extract().getConnection();
-			Statement stmtUser = connection.createStatement();
-			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-			stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getPlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-			stmtUser.execute("UPDATE Characters SET maxhealth = '" + data.getPlayer().getMaxHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-		} 
-		
-		catch (Exception e)
-		{
-			System.out.println(e);
+			data = MarketLogic.buyHealth(data);
+			
+			try 
+			{
+				Connection connection = DatabaseUrl.extract().getConnection();
+				Statement stmtUser = connection.createStatement();
+				stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+				stmtUser.execute("UPDATE Characters SET currenthealth = '" + data.getPlayer().getCurrentHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+				stmtUser.execute("UPDATE Characters SET maxhealth = '" + data.getPlayer().getMaxHealth() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			} 
+			
+			catch (Exception e)
+			{
+				System.out.println(e);
+			}
 		}
-		
-		return data;
+			
+			return data;
 	}
 	
 	@RequestMapping(value = "/buy/Potion", method = RequestMethod.POST)
 	public @ResponseBody MarketObject addPotions(@RequestBody MarketObject data) 
 	{
-		data = MarketLogic.buyPotion(data);
-		
-		try 
+		if(data.getPlayer().getMoney() > 0)
 		{
-			Connection connection = DatabaseUrl.extract().getConnection();
-			Statement stmtUser = connection.createStatement();
-			stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-			stmtUser.execute("UPDATE Characters SET healItems = '" + data.getPlayer().getHealItems() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
-		} 
-		
-		catch (Exception e)
-		{
-			System.out.println(e);
+			data = MarketLogic.buyPotion(data);
+			
+			try 
+			{
+				Connection connection = DatabaseUrl.extract().getConnection();
+				Statement stmtUser = connection.createStatement();
+				stmtUser.execute("UPDATE Characters SET zeni = '" + data.getPlayer().getMoney() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+				stmtUser.execute("UPDATE Characters SET healItems = '" + data.getPlayer().getHealItems() + "'  WHERE characterid = '" + data.getPlayer().getCharacterID() + "'");
+			} 
+			
+			catch (Exception e)
+			{
+				System.out.println(e);
+			}
 		}
 		
 		return data;
