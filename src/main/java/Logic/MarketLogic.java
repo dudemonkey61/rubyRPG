@@ -15,9 +15,7 @@ public class MarketLogic
 	
 	public static MarketObject buyAttack(MarketObject market)
 	{
-		market.getPlayer().setMaxHealth(market.getPlayer().getMaxHealth() + 1);
-		
-		market.getPlayer().setCurrentHealth(market.getPlayer().getMaxHealth());
+		market.getPlayer().setAttack(market.getPlayer().getAttack() + 1);
 		
 		market.getPlayer().setMoney(market.getPlayer().getMoney() - 1);
 		
@@ -26,7 +24,9 @@ public class MarketLogic
 	
 	public static MarketObject buyHealth(MarketObject market)
 	{
-		market.getPlayer().setAttack(market.getPlayer().getAttack() + 1);
+		market.getPlayer().setMaxHealth(market.getPlayer().getMaxHealth() + 1);
+		
+		market.getPlayer().setCurrentHealth(market.getPlayer().getMaxHealth());
 		
 		market.getPlayer().setMoney(market.getPlayer().getMoney() - 1);
 		
